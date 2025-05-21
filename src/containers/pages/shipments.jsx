@@ -174,24 +174,25 @@ console.log(infoAdmin)
                {
                 isAdmin ? (
                   <div className="">
-                  <h5>{infoAdmin.nombre + " " + infoAdmin.apellido}</h5>
-                  <h5>{infoAdmin.email}</h5>
+                  <h5 style={{fontWeight:600}}>{infoAdmin.nombre + " " + infoAdmin.apellido}</h5>
+                
                  
                 
                   {/* Hipervínculo con animación underline */}
                   <div className="mt-2">
                     <span 
-                      className="logout-link" 
+                      className="logout-link "
+                      style={{color:"#dedede"}} 
                       onClick={log_out_click}
                     >
-                      ¿Salir de sesión?
+                   Log out?
                     </span>
                   </div>
                 </div>
                 ):(
                   <div className="">
-                  <h5>{infoUser.nombre + " " + infoUser.apellido}</h5>
-                  <h5>{infoUser.email}</h5>
+                  <h5 style={{fontWeight:600}}>{infoUser.nombre + " " + infoUser.apellido}</h5>
+                
                   <div className="d-flex justify-content-start">
                     <h5 className="marginr-1">PMB: </h5>
                     <h5>{infoUser.pmb}</h5>
@@ -203,7 +204,7 @@ console.log(infoAdmin)
                       className="logout-link" 
                       onClick={log_out_click}
                     >
-                      ¿Salir de sesión?
+                   Log out?
                     </span>
                   </div>
                 </div>

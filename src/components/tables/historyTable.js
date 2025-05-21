@@ -35,8 +35,8 @@ function HistoryTable({ data, isAdmin }) {
         <Column title="Received Date" dataIndex="ReceivedDate" key="ReceivedDate" />
         <Column title="Name" dataIndex="Name" key="Name" />
         <Column title="Code" dataIndex="code" key="code" />
-        <Column title="Delivery Date" dataIndex="DeliveryDate" key="DeliveryDate" />
-        <Column title="Delivered By" dataIndex="DeliveredBy" key="DeliveredBy" />
+        <Column title="Picked up by" dataIndex="DeliveryDate" key="DeliveryDate" />
+        <Column title="Pickup date" dataIndex="DeliveredBy" key="DeliveredBy" />
       </Table>
     </div>
   );

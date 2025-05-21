@@ -458,7 +458,7 @@ const checkFields = async () => {
                 </AntForm.Item>
                 <AntForm.Item>
     <ReCAPTCHA
-      sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+      sitekey="6Le0ZUArAAAAAB3dG_M_Lgc7sk9fwEj94KCDFco6"
       onChange={onCaptchaChange}
       ref={recaptchaRef}
     />
