@@ -1,19 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
-import { Modal, Button, Input, Row, Form } from "antd";
-import Modalmensaje from "./modalMensaje";
+import { Modal, Button, Input, notification, Form } from "antd";
 import { actionNewPassword } from "../../redux/actions/login/login";
-import Toast from "../toasts/toast";
 import { useDispatch } from "react-redux";
-import logo from "../../assets/img/logo.png";
 
-function Home({ show, setShow, clave }) {
+function Home({ show, setShow, email }) {
   const handleClose = () => setShow(false);
   const [pass1, setPass1] = useState("");
   const [pass2, setPass2] = useState("");
-  const [msg, setMsg] = useState("");
-  const [showmsg, setShowmsg] = useState(false);
-  const [showtoast, setShowToast] = useState(false);
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   const inputRef2 = useRef(null);
@@ -31,16 +25,20 @@ function Home({ show, setShow, clave }) {
       btn_aceptar();
     }
   }
-
+  const openNotification = (msg) => {
+    notification.open({
+      message: "Error",
+      description: msg,
+    });
+  };
   const comprobar = () => {
     if (pass1.trim().length == 0 || pass2.trim().length == 0) {
-      setMsg("You cannot leave fields empty");
-      setShowmsg(true);
+      openNotification("You cannot leave fields empty");
       return false;
     }
     if (pass1.trim() != pass2.trim()) {
-      setMsg("Invalid password, they must match");
-      setShowmsg(true);
+      openNotification("Invalid password, they must match");
+  
       return false;
     }
     return true;
@@ -48,8 +46,7 @@ function Home({ show, setShow, clave }) {
 
   const callback = () => {
     setShow(false);
-    setMsg("Your password has been updated!");
-    setShowToast(true);
+    openNotification("Your password has been updated!");
   }
 
   const btn_aceptar = () => {
@@ -57,7 +54,7 @@ function Home({ show, setShow, clave }) {
       return;
     }
     var parametros = {
-      clave: clave,
+      email: email,
       pass: pass1
     };
     dispatch(actionNewPassword(parametros, callback, () => true))
@@ -65,8 +62,7 @@ function Home({ show, setShow, clave }) {
 
   return (
     <>
-      <Modalmensaje show={showmsg} setShow={setShowmsg} msg={msg} />
-      <Toast show={showtoast} msg={msg} setShow={setShowToast} />
+  
       <Modal
         title="Password Recovery"
         visible={show}

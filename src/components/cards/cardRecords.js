@@ -1,74 +1,103 @@
 import React, { useState } from 'react';
-import { Card, Col, Row, Image, Dropdown, Menu, Button, Modal } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { Card, Col, Row, Image, Button } from 'antd';
 import { connect } from "react-redux";
 import "../../assets/css/cards.css";
-import RecordsModal from "../modals/records/recordsDetails";
+import RecordsModal from "../modals/monitor/modaldetailspatient";
 
 const { Meta } = Card;
 
 const PatientRecords = ({ data }) => {
-  console.log(data)
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [detailID, setDetailID] = useState("-1");
+  const [diseaseInfo, setDiseaseInfo] = useState([]);
+  const [patientInfo, setPatientInfo] = useState([]);
+  const openRecordDetails = (index) => {
+    const record = data[index];
 
+    const name = record.name; // ← asegúrate que esto venga bien
+    const code = record.code;
+  
+    // Redirige a /records/<nombre>?id=<id>
+    navigate(`/records/${code}`);
+  };
+  
   const formatTitleDate = (dateStr) => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric', month: 'short', day: 'numeric'
+    });
   };
 
-  const openModal = (id) => {
-    setDetailID(id);
+  const openModal = (index) => {
+    setDiseaseInfo(data[index].diseases);
+    setPatientInfo([
+      data[index].patient_name,
+      data[index].datetime,
+      data[index].id
+    ]);
     setIsModalOpen(true);
   };
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="1">Exportar</Menu.Item>
-      <Menu.Item key="2">Eliminar</Menu.Item>
-    </Menu>
-  );
-
   return (
-    <div className="site-card-wrapper">
-      <RecordsModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} detailID={detailID} />
-      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-      {
-          Array.isArray(data) && data.map((record, index) => (
-          
-            <Col xs={24} sm={12} md={8} lg={6}>
-            
-              <Card
-                hoverable
-                style={{ width: '100%', padding: 10, margin: 10 }}
-                cover={
-                  <Image
-                    height={200}
-                    width={"100%"}
-                    alt="example"
-                    src={`http://${window.location.hostname}:8000${record.detection_img}`} 
-                  />
-                }
-              >
-                <Meta title={formatTitleDate(record.datetime)} description={"Diagnosis: " + ((record.diseases && record.diseases.length > 0 && record.diseases[0].disease_name) ? <p  className='inlineblock marginl-1 text-danger ' >Positive</p> : "Negative")} />
-                
-                <div className='margint-2 d-flex justify-content-end'>
-                  <Dropdown className='marginr-1 border-0' overlay={menu}>
-                    <Button shape="circle" icon={<i className="fa-solid fa-ellipsis"></i>}/>
-                  </Dropdown>
-                  <Button onClick={() => openModal(index)} className='custom-button' type="primary"><i className='fas fa-file marginr-1'></i>Details</Button>
-                </div>
-              </Card>
-            </Col>
-          ))
-        }
+    <div className="site-card-wrapper" style={{ padding: '20px' }}>
+      {data && data.length > 0 && (
+        <RecordsModal
+          isConfirmedActive={false}
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          dataPatient={patientInfo}
+          dataDisease={diseaseInfo}
+        />
+      )}
+
+      <Row gutter={[24, 24]}>
+        {Array.isArray(data) && data.map((record, index) => (
+          <Col key={index} xs={24} sm={12} md={8} lg={6}>
+            <Card
+              hoverable
+              style={{
+                backgroundColor: "#1e1e1e",
+                color: "#fff",
+                borderRadius: 12,
+                border: 0,
+                boxShadow: "0 0 10px rgba(0,0,0,0.3)"
+              }}
+              cover={
+                <Image
+                  height={200}
+                  width="100%"
+                  style={{ borderTopLeftRadius: 12, borderTopRightRadius: 12, objectFit: "cover" }}
+                  alt="Fundus"
+                  src={`http://${window.location.hostname}:5000/${record.img}`}
+                  preview={false}
+                />
+              }
+            >
+              <h6
+ 
+                style={{ color: "#fff" }}
+              >{formatTitleDate(record.dateTime)}</h6>
+              <div className="d-flex justify-content-end margint-2">
+                <Button
+                  onClick={() => openRecordDetails(index)}
+                  className="custom-button"
+                  type="primary"
+                  style={{
+                    marginTop: 10,
+                    backgroundColor: "#00c46b",
+                    borderColor: "#00c46b"
+                  }}
+                >
+                  <i className="fas fa-file marginr-1" /> Details
+                </Button>
+              </div>
+            </Card>
+          </Col>
+        ))}
       </Row>
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-
-});
-
-export default connect(mapStateToProps)(PatientRecords);
-
+export default connect()(PatientRecords);

@@ -1,64 +1,39 @@
-import React, { useState } from 'react';
-import { Drawer, Radio, Space, Button,DatePicker  } from 'antd';
+import React from 'react';
+import { Drawer, Input, DatePicker, Button, Space } from 'antd';
 
-function Home({show, setShow, setTitleButton, setTitleDate}) {
-  const [visibleSubDrawer, setVisibleSubDrawer] = useState(false);
+const { RangePicker } = DatePicker;
+
+function RecordFilter({ show, setShow, onFilter, isAdmin, filterValues, setFilterValues }) {
+  const { pmb, code,startDate, endDate } = filterValues;
 
   const onCloseMain = () => {
     setShow(false);
   };
 
   const showSubDrawer = () => {
-    setVisibleSubDrawer(true);
+    setFilterValues(prev => ({ ...prev, showSubDrawer: true }));
   };
 
   const onCloseSub = () => {
-    setVisibleSubDrawer(false);
+    setFilterValues(prev => ({ ...prev, showSubDrawer: false }));
   };
 
-// Esta función toma dos fechas y retorna una cadena en el formato 'Mmm dd-dd, yyyy'
-const formatDateRange = (startDate, endDate) => {
-  if (startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear()) {
-      return `${startDate.toLocaleDateString('en-US', { month: 'short' })} ${startDate.getDate()}-${endDate.getDate()}, ${endDate.getFullYear()}`;
-  } else {
-      return `${startDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} - ${endDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
-  }
-};
+  const handleSearch = () => {
+    if (onFilter) {
+      onFilter(filterValues);
+    }
+    setShow(false); // Cierra el Drawer después de buscar
+  };
 
-const handleRadioChange = e => {
-  setTitleButton(e.target.value);
-
-  const now = new Date();
-  const weekStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-
-  switch(e.target.value){
-      case "Today":
-          setTitleDate(formatDateRange(now, now));
-          break;
-      case "This week":
-          setTitleDate(formatDateRange(weekStart, now));
-          break;
-      case "This month":
-        console.log(formatDateRange(monthStart, now))
-          setTitleDate(formatDateRange(monthStart, now));
-          break;
-      case "Custom":
-          showSubDrawer();
-          break;
-      default:
-          setTitleDate("");
-          break;
-  }
-};
-const handleRangeChange = dates => {
-  if (dates) {
-    const [start, end] = dates;
-    setTitleDate(formatDateRange(start.toDate(), end.toDate()));
-  }
-};
-
-
+  const handleDateChange = (dates) => {
+    if (dates) {
+      setFilterValues(prev => ({
+        ...prev,
+        startDate: dates[0] ? dates[0].toDate() : null,
+        endDate: dates[1] ? dates[1].toDate() : null,
+      }));
+    }
+  };
 
   return (
     <>
@@ -70,29 +45,65 @@ const handleRangeChange = dates => {
         visible={show}
         extra={
           <Space>
-            <Button onClick={() =>setShow(false)}><i className='fas fa-times'></i></Button>
+            <Button onClick={onCloseMain}>
+              <i className="fas fa-times"></i>
+            </Button>
           </Space>
         }
       >
-        <Radio.Group size='large' onChange={handleRadioChange} direction="vertical">
-          <Radio value={"Today"}  className='w-100  m-1'>Today</Radio>
-          <Radio value={"This week"} className='w-100 m-1'>This week</Radio>
-          <Radio value={"This month"} className='w-100 m-1'>This month</Radio>
-          <Radio value='Custom' className='w-100 m-1'>Custom</Radio>
-        </Radio.Group>
+        <Space direction="vertical" size="large" style={{ width: '100%' }}>
+          <Input
+            placeholder={ "Search by Code"}
+            value={code}
+            onChange={(e) => setFilterValues(prev => ({ ...prev, code: e.target.value }))}
+            allowClear
+            size="large"
+          />
+          {
+            isAdmin && (
+            <Input
+            placeholder={ "Search by PMB"}
+            value={pmb}
+            onChange={(e) => setFilterValues(prev => ({ ...prev, pmb: e.target.value }))}
+            allowClear
+            size="large"
+          />
+            )
+          }
+
+          <Button block size="large" onClick={showSubDrawer}>
+            Select Date Range
+          </Button>
+
+          <Button type="primary" size="large" block onClick={handleSearch}>
+          <i className="fas fa-search marginr-1"></i> Search
+          </Button>
+        </Space>
 
         <Drawer
-          title="Calendar"
+          title="Select Date Range"
           placement="right"
           closable={false}
           onClose={onCloseSub}
-          visible={visibleSubDrawer}
+          visible={filterValues.showSubDrawer || false}
         >
-          <DatePicker.RangePicker onChange={handleRangeChange} />
+          <RangePicker
+            size="large"
+            style={{ width: '100%' }}
+            onChange={handleDateChange}
+          />
+          <Button
+            type="primary"
+            block
+            style={{ marginTop: 16 }}
+            onClick={onCloseSub}
+          >
+            Confirm Date Range
+          </Button>
         </Drawer>
       </Drawer>
     </>
   );
 }
 
-export default Home;
+export default RecordFilter;

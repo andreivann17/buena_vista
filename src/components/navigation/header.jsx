@@ -1,90 +1,63 @@
-import React, { useState,useImperativeHandle, useEffect } from 'react';
-import "../../assets/css/header.css";
-import {Button} from "react-bootstrap/";
-import {connect} from "react-redux"
-const Header =({children, title,icon,scroll}) => {
-  const [headerStyle,setHeaderStyle] = useState({})
-  const [titleStyle,setTitleStyle] = useState({})
-  useEffect(() => {    
-    if (scroll > 100) {      
-      setHeaderStyle(
-       {
-         display: 'block',
-         backgroundColor: '#DD971A',
-         WebkitBoxShadow: '0px 0.5px 12px 0px rgba(0,0,0,0.75)',
-         MozBoxShadow: '0px 0.5px 12px 0px rgba(0,0,0,0.75)',
-         boxShadow: '0px 0.5px 12px 0px rgba(0,0,0,0.75)'
-       }
-      )
-      setTitleStyle(
-       {
-         opacity: 1,
-         WebkitTransition: 'opacity 0.3s'
-       }
-      )
-        
-        }       
-        else
-        if (scroll > 50 && scroll <= 100) { 
-         setHeaderStyle(
-           {
-             display: 'block',
-             backgroundColor: '#DD971Ab6',
-             WebkitBoxShadow: '0px 0.5px 12px 0px rgba(0,0,0,0.75)',
-             MozBoxShadow: '0px 0.5px 12px 0px rgba(0,0,0,0.75)',
-             boxShadow: '0px 0.5px 12px 0px rgba(0,0,0,0.75)'
-           }
-          )
-          setTitleStyle(
-           {
-             opacity: 0,
-             WebkitTransition: 'opacity 0.3s'
-           }
-          )
-             
-          
-        }
-        else
-        if(scroll <= 60) {
-      
-         setHeaderStyle(
-           {
-             display: 'block',
-             backgroundColor: 'transparent',
-      
-           }
-          )
-          setTitleStyle(
-           {
-             opacity: 0,
-             WebkitTransition: 'opacity 0.3s'
-           }
-          )
-            
-        }
-  }, [scroll]);
- 
+import React from "react";
+import { Link } from "react-router-dom";
+import logo from "../../assets/img/logo.png"
+import "../../assets/css/header_home.css"
+function Header({ onScrollHome, onScrollLocation, onScrollContact,onScrollService }) {
   return (
-    <div  className={  'Panel_Arriba'}  style={headerStyle}>
-      <div style={titleStyle} className="div_titulopanela">
-        <div className="d-flex justify-content-start  align-items-center">
-          <i style={{color:"#fff", fontSize:22}} className={icon + "  marginl-2 "}></i>
-          <h4 className="margint-1 marginl-2 titulopanelss marginr-2 text-white">
-            {title}  
-          </h4>
-          <div className="div_btnguardarssvd">
-          {children}
-          </div>
-        </div>
+    <header style={styles.header}>
+      <div className="d-flex align-items-center">
+        <img  onClick={onScrollHome} src={logo} className="marginr-1 link-pointer" style={{ width: 60 }} alt="" />
+        <div className="link-pointer" onClick={onScrollHome} style={styles.logo}>Buena Vista Mail Center</div>
       </div>
-      
-    </div>
+      <nav style={styles.navLinks}>
+      <span className="link-pointer header-link" onClick={onScrollService}>Services</span>
+<span className="link-pointer header-link" onClick={onScrollLocation}>Location</span>
+<span className="link-pointer header-link" onClick={onScrollContact}>Contact</span>
+      </nav>
+    </header>
   );
 }
 
+const styles = {
+  header: {
+    display: 'flex',
+    position:"fixed",
+    width:"100%",
+    top:0,
+    zIndex:"100",
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '20px',
+    backgroundColor: '#2683c6',
+    color: 'white',
+    flexWrap: 'wrap'
+  },
+  logo: {
+    fontSize: '24px',
+    color:"#fff",
+    fontWeight: 'bold'
+  },
+  navLinks: {
+    display: 'flex',
+    gap: '15px',
+    alignItems: 'center'
+  },
+  link: {
+    color: 'white',
+    textDecoration: 'none',
+    fontSize: '16px'
+  },
+  login: {
+    border: '1px solid white',
+    padding: '5px 10px',
+    borderRadius: '5px'
+  },
+  signup: {
+    backgroundColor: 'white',
+    color: '#0052cc',
+    padding: '5px 10px',
+    borderRadius: '5px'
+  }
+};
 
-const mapStateToProps = (state) => ({
-  scroll: state.utils.scroll ?? 0,
-});
-
-export default connect(mapStateToProps)(Header);
+export default Header;

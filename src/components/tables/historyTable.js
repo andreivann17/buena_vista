@@ -1,61 +1,45 @@
-import React,{ useEffect,useState }  from 'react';
-import { Space, Table, Tag } from 'antd';
-import Header from "../../components/navigation/header.jsx";
-import Contenido from "../../components/navigation/content.jsx";
-import { useDispatch, connect } from "react-redux";
-const token = localStorage.getItem("tokends");
-const columns = [
-    {
-      title: '#',
-      dataIndex: 'count',
-      key: 'count',
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
-      render: (text) => <a>{text}</a>,
-    },
-    {
-      title: 'Action',
-      dataIndex: 'action',
-      key: 'action',
-    },
-    {
-      title: 'Section',
-      dataIndex: 'section',
-      key: 'section',
-    },
-  
-   
-  ];
-function Home({data}) {
+import React from 'react';
+import { Table } from 'antd';
 
-  useEffect(() => {
-    // dispatch(actionDivisas())
-  }, []);
+const { Column } = Table;
+
+function HistoryTable({ data, isAdmin }) {
+  const mappedData = Array.isArray(data)
+    ? data.map(item => ({
+        RecordNumber: item.registro,
+        pmb: item.pmb,
+        ReceivedDate: item.fecharecibido,
+        Name: item.nombre,
+        code: item.codigoenvio,
+        DeliveryDate: item.fechaentrega,
+        DeliveredBy: item.nombreentregado,
+      }))
+    : [];
+
   return (
-    <>
-      {token != null && (
-        <>
-        
-          <Header title={""} icon={"fas fa-utensils marginr-1 "} />
-          <Contenido title={""} icon={"fas fa-utensils marginr-1 "} />
-          <div className="Panel_Contenido  marginb-5">
-       
-            <div className="mt-3">
-            <Table columns={columns} dataSource={data} />
-            </div>
-          </div>
-        </>
-      )}
-    </>
+    <div style={{
+      width: '100%',
+      overflowX: 'auto',
+      maxWidth: '100%',
+    }}>
+      <Table
+        dataSource={mappedData}
+        rowKey="RecordNumber"
+        bordered
+        style={{ minWidth: 600, marginBottom: '30px' }}
+        pagination={{ style: { marginTop: '30px' } }}
+      >
+        {isAdmin && (
+          <Column title="PMB" dataIndex="pmb" key="pmb" />
+        )}
+        <Column title="Received Date" dataIndex="ReceivedDate" key="ReceivedDate" />
+        <Column title="Name" dataIndex="Name" key="Name" />
+        <Column title="Code" dataIndex="code" key="code" />
+        <Column title="Delivery Date" dataIndex="DeliveryDate" key="DeliveryDate" />
+        <Column title="Delivered By" dataIndex="DeliveredBy" key="DeliveredBy" />
+      </Table>
+    </div>
   );
 }
 
-const mapStateToProps = (state) => ({
-    data : state.history.data ?? []
-});
-
-export default connect(mapStateToProps)(Home);
+export default HistoryTable;

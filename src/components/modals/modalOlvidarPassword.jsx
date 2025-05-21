@@ -3,13 +3,12 @@ import { useState } from "react";
 import { Modal, Button, Row, Input, notification } from "antd";
 import Modalmensaje from "./modalMensaje"
 import Modalenter from "./modalEnterCode"
-import { actionCorreo } from "../../redux/actions/login/login"
+import { actionEmail } from "../../redux/actions/login/login"
 import { useDispatch } from "react-redux";
-import logo from "../../assets/img/logo.png";
 
 import { FloatingLabel, Form } from "react-bootstrap";
 function Home({ show, setShow }) {
-  const [correo, setCorreo] = useState("")
+  const [email, setEmail] = useState("")
   const [msg, setMsg] = useState("")
   const [showmsg, setShowmsg] = useState(false)
   const [showenter, setShowenter] = useState(false)
@@ -25,15 +24,15 @@ function Home({ show, setShow }) {
   }
 
   const btn_aceptar = () => {
-    if (correo.trim().length == 0) {
+    if (email.trim().length == 0) {
       setMsg("You cannot leave empty field")
       setShowmsg(true)
       return
     }
     var parametros = {
-      correo: correo
+      email: email
     };
-    dispatch(actionCorreo(parametros, callback, callbackError));
+    dispatch(actionEmail(parametros, callback, callbackError));
   }
 
   const callback = (value) => {
@@ -54,7 +53,7 @@ function Home({ show, setShow }) {
   return (
     <>
       <Modalmensaje show={showmsg} setShow={setShowmsg} msg={msg} />
-      <Modalenter show={showenter} setShow={setShowenter} clave={clave} />
+      <Modalenter show={showenter} setShow={setShowenter} email={email} />
       <Modal
         title="Password Recovery"
         visible={show}
@@ -80,8 +79,8 @@ function Home({ show, setShow }) {
             <Form.Control
               required
               type="text"
-              value={correo}
-              onChange={(ev) => setCorreo(ev.target.value)}
+              value={email}
+              onChange={(ev) => setEmail(ev.target.value)}
               placeholder="Enter email"
               maxLength={100}
               ref={inputRef}

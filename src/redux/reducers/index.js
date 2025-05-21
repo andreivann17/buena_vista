@@ -1,15 +1,17 @@
 import {combineReducers} from "redux"
-import menus from "./menus"
+import home from "./home"
+import login from "./login"
 import utils from "./utils"
-import form from "./form"
-import records from "./records"
-import patients from "./patients"
-import statistics from "./statistics"
+import menus from "./menus"
+import payment from "./payment"
+import shipments from "./shipments"
+import users from "./users"
 export default combineReducers({
-    menus,
+    home,
+    login,
+    payment,
+    users,
+    shipments,
     utils,
-    form,
-    records,
-    patients,
-    statistics,
+    menus,
 })

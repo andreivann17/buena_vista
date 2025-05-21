@@ -1,0 +1,35 @@
+.dark-modal .ant-modal-content {
+    background-color: #1e1e1e;
+    color: white;
+  }
+  
+  .dark-modal .ant-modal-header {
+    background-color: #1e1e1e;
+    border-bottom: 1px solid #333;
+  }
+  
+  .dark-modal .ant-modal-title {
+    color: white;
+  }
+  
+  .dark-modal .ant-tabs-nav {
+    background-color: transparent;
+  }
+  
+  .dark-modal .ant-tabs-tab {
+    color: #ccc;
+  }
+  
+  .dark-modal .ant-tabs-tab-active {
+    color: #fff;
+  }
+  
+  .dark-modal .ant-btn-primary {
+    background-color: #3a3a3a;
+    border-color: #555;
+  }
+  
+  .dark-modal .ant-btn-primary:hover {
+    background-color: #555;
+  }
+  

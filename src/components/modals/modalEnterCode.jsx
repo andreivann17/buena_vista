@@ -3,11 +3,10 @@ import { useState } from "react";
 import { Modal, Button, Input, Form } from "antd";
 import Modalmensaje from "./modalMensaje";
 import Modalnewpass from "./modalNewPassword";
-import { actionCodigo } from "../../redux/actions/login/login";
+import { actionValidateCode } from "../../redux/actions/login/login";
 import { useDispatch } from "react-redux";
-import logo from "../../assets/img/logo.png";
 
-function Home({ show, setShow, clave }) {
+function Home({ show, setShow, email }) {
   const handleClose = () => setShow(false);
   const [code, setCode] = useState("");
   const [msg, setMsg] = useState("");
@@ -30,10 +29,10 @@ function Home({ show, setShow, clave }) {
       return;
     }
     var parametros = {
-      clave: clave,
+      email: email,
       code: code,
     };
-    dispatch(actionCodigo(parametros, callback, callbackError));
+    dispatch(actionValidateCode(parametros, callback, callbackError));
   }
 
   const callback = (value) => {
@@ -54,7 +53,7 @@ function Home({ show, setShow, clave }) {
   return (
     <>
       <Modalmensaje show={showmsg} setShow={setShowmsg} msg={msg} />
-      <Modalnewpass show={showpass} setShow={setShowpass} clave={clave} />
+      <Modalnewpass show={showpass} setShow={setShowpass} email={email} />
       <Modal
         title="Password Recovery"
         visible={show}

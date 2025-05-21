@@ -13,18 +13,36 @@
       flex-direction: column;
   }
 }
+.overlay-interactive {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
 
+#image_original_records{
+  cursor: pointer;
+}
 .upload-component, .action-container {
   width: 300px;  /* Anchura fija para ambos contenedores */
   min-height: 200px;
+}
+.row.equal-height {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.row.equal-height > [class^="col-"] {
+  display: flex;
+  flex-direction: column;
+}
+
+.equal-height-card {
+  flex: 1;
+  height: 100%;
 }
 
 .action-container {
   background-color: #f0f0f0; 
   padding: 15px;
-}
-.dark-modal-result .ant-modal-close {
-  display: none;
 }
 
 .custom-select-dark {
@@ -34,7 +52,7 @@
   background-color: #333;
   color: white;
   border-color: #444;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="%2300723F" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"></path></svg>');
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="%232683c6" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"></path></svg>');
   background-repeat: no-repeat;
   background-position: right 0.7em top 50%;
   background-size: 1.5em 1.5em;
@@ -42,11 +60,24 @@
   padding-right: 2em;
 }
 
-
+.custom-textarea-dark {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: rgb(51, 51, 51);
+  color: white;
+  border-color: #444;
+ 
+  background-repeat: no-repeat;
+  background-position: right 0.7em top 50%;
+  background-size: 1.5em 1.5em;
+  border-radius: 0.25em;
+  padding-right: 2em;
+}
 /* Sobrescribe el color del círculo del Step en proceso */
 .ant-steps-item-process .ant-steps-item-icon {
-  background-color: rgb(0, 114, 63) !important;
-  border-color: #00723F !important;
+  background-color: rgb(29, 167, 223) !important;
+  border-color: #2683c6 !important;
 }
 
 /* Cambiar el color del texto (número) dentro del círculo en proceso */
@@ -57,13 +88,13 @@
 /* Cambiar el color de la línea que conecta los steps */
 .ant-steps-item-process .ant-steps-item-tail::before, 
 .ant-steps-item-finish .ant-steps-item-tail::before {
-  background-color: #00723F !important;
+  background-color: #2683c6 !important;
 }
 
 /* Cambiar el color del círculo del Step finalizado */
 .ant-steps-item-finish .ant-steps-item-icon {
-  background-color: #00723F !important;
-  border-color: #00723F !important;
+  background-color: #2683c6 !important;
+  border-color: #2683c6 !important;
 }
 
 /* Cambiar el color del ícono (checkmark) de los steps finalizados */
@@ -74,7 +105,7 @@
 /* Si también quieres cambiar el color del texto del Step finalizado */
 .ant-steps-item-finish .ant-steps-item-title,
 .ant-steps-item-finish .ant-steps-item-description {
-  color: #00723F !important;
+  color: #2683c6 !important;
 }
 
 
@@ -97,11 +128,11 @@
   margin-top: auto;
 }
 .custom-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: #00723F;
+  color: rgb(38, 131, 198);
 }
 .custom-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn, 
 .custom-tabs .ant-tabs-tab:hover .ant-tabs-tab-btn {
-    color: #00723F;
+    color: rgb(0, 114, 63);
 }
 .custom-tabs .ant-tabs-ink-bar {
   background-color: rgb(0, 114, 63);
@@ -109,21 +140,35 @@
 
 .input-usuario:focus, .input-contrasena:focus {
   outline: none;
-  border-color: #007bff; /* Un azul más intenso */
-  box-shadow: 0 0 15px #007bff; /* Aumentamos el tamaño del resplandor */
+  border-color: #2683c6; /* Un azul más intenso */
+  box-shadow: 0 0 15px #2683c6; /* Aumentamos el tamaño del resplandor */
+
+}
+
+.custom-bordered-table th, 
+.custom-bordered-table th {
+  border-bottom: 1px solid #000 !important; /* Borde fuerte entre celdas */
 }
 
 .custom-button {
-    background-color: #00723f !important;
-    border-color: #00723f !important;
+    background-color: #2683c6 !important;
+    border-color: #2683c6 !important;
     color: white !important;
     transition: all 0.3s ease-out;
   }
-  
+  .custom-button-active{
+    background-color: #1e699f !important;
+    border-color: #1e699f !important;
+    color: white !important;
+    transition: all 0.3s ease-out;
+  }
+  body{
+    background-color: #ececec;
+  }
   .custom-button:hover {
     transform: scale(1.1);
-    background-color: #00572b !important;
-    border-color: #00572b !important;
+    background-color: #1893c4 !important;
+    border-color: #1893c4 !important;
   }
   
   .custom-button:active {
@@ -141,7 +186,77 @@
     background-color: #565e66 !important;
     border-color: #565e66 !important;
   }
-  
+  /* Fondo y texto */
+.dark-table {
+  background-color: #121212 !important;
+  color: white !important;
+  border: none !important;
+}
+
+/* Header */
+.dark-table .ant-table-thead > tr > th {
+  background-color: #1e1e1e !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 0 !important; /* quitar bordes redondos */
+}
+
+/* Celdas del body */
+.dark-table .ant-table-tbody > tr > td {
+  background-color: #090909 !important;
+  color: white !important;
+  border: none !important;
+}
+
+/* Contenedor tabla */
+.dark-table .ant-table-container table {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+/* Ícono del botón mover */
+.dark-table .ant-btn .anticon {
+  color: white !important;
+}
+
+/* Borde blanco general o sombra externa */
+.dark-table .ant-table-wrapper {
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+}
+:where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container{
+  border: 0;
+}
+:where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:first-child{
+  border:0
+}
+:where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table-thead >tr>th, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table-thead >tr>td{
+  position: unset;
+}
+
+/* Botón mover (DragHandle) */
+.dark-table .ant-btn {
+  background-color: transparent !important;
+  border: none !important;
+  color: white !important;
+}
+
+/* Eliminar el borde blanco alrededor de la tabla */
+.dark-table .ant-table-content {
+  border: none !important;
+}
+/* Texto "No data" */
+.dark-table .ant-empty-description {
+  color: white !important;
+}
+
+/* Ícono de "No data" si quieres bajarle un poco el brillo */
+.dark-table .ant-empty-image {
+  filter: brightness(80%) !important;
+}
+
   .custom-button-secondary:active {
     transform: scale(1.0);
   }
@@ -153,7 +268,16 @@ select:disabled {
     background: none;
     border: none;
   }
-  
+  .ant-table-thead td{
+    background-color: #1e1e1e  !important;
+    border-inline-end :0;
+  }
+  :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-content >table >thead>tr>th, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-header >table >thead>tr>th, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-body >table >thead>tr>th, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-summary >table >thead>tr>th, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-content >table >thead>tr>td, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-header >table >thead>tr>td, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-body >table >thead>tr>td, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-summary >table >thead>tr>td, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-content >table >tbody>tr>th, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-header >table >tbody>tr>th, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-body >table >tbody>tr>th, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-summary >table >tbody>tr>th, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-content >table >tbody>tr>td, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-header >table >tbody>tr>td, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-body >table >tbody>tr>td, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-summary >table >tbody>tr>td, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-content >table >tfoot>tr>th, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-header >table >tfoot>tr>th, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-body >table >tfoot>tr>th, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-summary >table >tfoot>tr>th, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-content >table >tfoot>tr>td, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-header >table >tfoot>tr>td, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-body >table >tfoot>tr>td, :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-summary >table >tfoot>tr>td{
+    border-inline-end :0;
+  }
+  :where(.css-dev-only-do-not-override-19gw05y).ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:first-child{
+   border-start-start-radius:0;
+  }
   .transparent-modal-body {
     background: none;
   }
@@ -278,7 +402,7 @@ cursor: pointer;
      height: calc(100vh);
      margin-left: 60px;
      width: calc(100% - 60px);
-     background-color: #f6f7fb;
+    
     
 
     
@@ -338,7 +462,15 @@ cursor: pointer;
     z-index: 12;
     
 }
-
+.div-navbar-mobile{
+  width: 100%;
+  overflow-x: hidden;    
+  overflow-y: hidden;
+  display: inline-block;
+  position: fixed;
+  bottom:0px;
+  z-index: 12;
+}
 
 a{
     color: inherit;

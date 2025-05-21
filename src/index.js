@@ -1,4 +1,4 @@
-import { createRef } from "react";
+import { createRef, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
@@ -9,15 +9,17 @@ import {
 } from "react-router-dom";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import {actionScroll} from "./redux/actions/utils/utils"
-import Menu from "./components/navigation/menus";
+import Menu from "./components/navigation/menusDashboard";
 import Login from "./containers/pages/login";
-import Profiles from "./containers/pages/profiles";
+import SignUp from "./containers/pages/signup";
+import Shipments from "./containers/pages/shipments";
+import Users from "./containers/pages/users";
+
+import Payment from "./containers/pages/payment";
+import Pricing from "./containers/pages/pricing";
+import Location from "./containers/pages/location";
+import Contact from "./containers/pages/contact";
 import Home from "./containers/pages/home";
-import Consult from "./containers/pages/consult"
-import Patients from "./containers/pages/patients";
-import History from "./containers/pages/history";
-import Statistics from "./containers/pages/statistics";
-import Records from "./containers/pages/records";
 import NotFound from "./containers/errors/error404";
 import "./assets/css/bootstrap.css";
 import "./assets/css/administrador.css";
@@ -27,27 +29,87 @@ import "./assets/css/scroll.css";
 import "./assets/css/utils.css";
 import store from "./store";
 import { Provider, useDispatch } from "react-redux";
-import DiagnosisAi from "./containers/pages/diagnosisai";
-const token = localStorage.getItem("tokends");
+import Footer from "./components/navigation/footer";
+import Header from "./components/navigation/header";
+const pagesWithoutMenuAndDiv = ["*","/location","/contact","/pricing","/login", "/signup", "/admin/login",""];
+const pagesWithoutMenuAndHeader = ["/login", "/signup", "/admin/login"];
+
 const routes = [
- 
- 
   {
-    path: "/login",
+    path: "/pricing",
+    value: "pricing-0",
+    name: "Pricing",
+    element: <Pricing />,
+    nodeRef: createRef(),
+    className: "Pricing",
+  },
+  {
+    path: "/contact",
+    value: "contact-0",
+    name: "Contact",
+    element: <Contact />,
+    nodeRef: createRef(),
+    className: "Contact",
+  },
+  {
+    path: "/location",
+    value: "location-0",
+    name: "Location",
+    element: <Location />,
+    nodeRef: createRef(),
+    className: "Location",
+  },
+  {
+    path: "/shipments",
+    value: "shipments-0",
+    name: "Shipments",
+    element: <Shipments />,
+    nodeRef: createRef(),
+    className: "Shipments",
+  },
+  {
+    path: "/admin/shipments",
+    value: "shipments-0",
+    name: "Shipments",
+    element: <Shipments />,
+    nodeRef: createRef(),
+    className: "Shipments",
+  },
+  {
+    path: "/admin/users",
+    value: "users-0",
+    name: "Users",
+    element: <Users />,
+    nodeRef: createRef(),
+    className: "Users",
+  },
+  {
+    path: "/payment",
+    value: "payment-0",
+    name: "Payment",
+    element: <Payment />,
+    nodeRef: createRef(),
+    className: "Payment",
+  },
+  {
+    path: "/admin/login",
     value: "login-0",
     name: "Login",
     element: <Login />,
     nodeRef: createRef(),
     className: "Login",
   },
+  
+
   {
-    path: "/profiles",
-    value: "profiles-0",
-    name: "Profiles",
-    element: <Profiles />,
+    path: "/signup",
+    value: "signup-0",
+    name: "SignUp",
+    element: <SignUp />,
     nodeRef: createRef(),
-    className: "Profiles",
+    className: "SignUp",
   },
+
   {
     path: "/",
     value: "0-0",
@@ -56,56 +118,9 @@ const routes = [
     nodeRef: createRef(),
     className: "Home",
   },
- 
-  {
-    path: "/records",
-    value: "1-0",
-    name: "Records",
-    element: <Records />,
-    nodeRef: createRef(),
-    className: "Records",
-  },
   
-  {
-    path: "/patient",
-    value: "1-1",
-    name: "Patients",
-    element: <Patients />,
-    nodeRef: createRef(),
-    className: "Patients",
-  },
-  {
-    path: "/history",
-    value: "1-1",
-    name: "History",
-    element: <History />,
-    nodeRef: createRef(),
-    className: "History",
-  },
-  {
-    path: "/statistics",
-    value: "1-0",
-    name: "Statistics",
-    element: <Statistics />,
-    nodeRef: createRef(),
-    className: "Statistics",
-  },
-  {
-    path: "/diagnosis",
-    value: "1-0",
-    name: "Diagnosisai",
-    element: <DiagnosisAi />,
-    nodeRef: createRef(),
-    className: "Diagnosisai",
-  },
-  {
-    path: "/consult",
-    value: "1-0",
-    name: "Consult",
-    element: <Consult />,
-    nodeRef: createRef(),
-    className: "Consult",
-  },
+ 
+
   {
     path: "*",
     value: "NotFound",
@@ -114,6 +129,7 @@ const routes = [
     nodeRef: createRef(),
     className: "NotFound",
   },
+  
 ];
 const router = createBrowserRouter([
   {
@@ -128,83 +144,89 @@ const router = createBrowserRouter([
 ]);
 
 function Example() {
-  const navegate = useNavigate();
-  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
   const currentOutlet = useOutlet();
-  const pathname = location.pathname;
-  const normalpath = pathname.replace(/\/+$/, "");
-  if (token == null) {
-    if (normalpath != "/login") {
-      navegate("/login");
-    }
-  }
+  const pathname = location.pathname.replace(/\/+$/, ""); // quita "/" final
+  const isAdmin = pathname.includes("/admin");
 
+  const routecorrect = routes.find((route) => {
+    const routePath = route.path.replace(/\/+$/, "");
+    return pathname === routePath;
+  });
 
-let routecorrect = null;
-let id = normalpath.split('/').pop(); 
-
-if (id) {
-    routecorrect = routes.find(route => {
-        
-        let routeSegments = route.path.split('/');
-        let lastSegment = routeSegments.pop();
-
-        if (lastSegment === ':id' && normalpath.startsWith(routeSegments.join('/'))) {
-            return true;
-        }
-        return false;
-    });
-} else {
-    routecorrect = routes.find(route => normalpath === route.path);
-}
+  const routeclass = routecorrect?.value || "unknown";
+  const nodeRef = routecorrect?.nodeRef || null;
 
   const handleRightClick = (event) => {
     if (event.target.classList.contains('cardcatalogo')) {
       event.preventDefault();
     }
-  }
-  const onScroll = (event) =>{
-    dispatch(actionScroll(event.currentTarget.scrollTop))
+  };
 
-  }
-  const routeclass = routecorrect?.value || "unknown";
-  const { nodeRef } =
-    routes.find((route) => route.path === location.pathname) ?? {};
+  const onScroll = (event) => {
+    dispatch(actionScroll(event.currentTarget.scrollTop));
+  };
+  //console.log( routecorrect?.name)
+  const isNotFoundPage = !routecorrect; // Si no encuentra ruta, asumimos que es 404
+  const shouldShowMenu = !isNotFoundPage && !pagesWithoutMenuAndDiv.includes(pathname);
+  const shouldShowMenuAndHeaderFooter = !pagesWithoutMenuAndHeader.includes(pathname);
   
+  const divClassName = shouldShowMenu ? "div_contentmaster" : "";
+  
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024); // Ajusta el ancho según tu break-point
+
+useEffect(() => {
+  const handleResize = () => {
+    setIsMobile(window.innerWidth <= 1024); // Menor o igual a tablet
+  };
+
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
   return (
     <>
-    {
-     ( normalpath !== "/login" &&  normalpath !== "/profiles") &&
+      {/* Mostrar Menu si corresponde */}
 
-     <Menu
-   
-          valuenav={routeclass.split("-")[0]}
-          subvalue={routeclass.split("-")[1]}
-        ></Menu>
-      }
-<div onScroll={(evt) => onScroll(evt)} onContextMenu={handleRightClick} className={(normalpath === "/login" || normalpath ==="/profiles") ? "" : "div_contentmaster"}>
-        <div>
-          <SwitchTransition>
-            <CSSTransition
-              key={location.pathname}
-              nodeRef={nodeRef}
-              timeout={200}
-              classNames="page"
-              unmountOnExit
-            >
-              {(state) => (
-                <div ref={nodeRef} className="page">
-                  {currentOutlet}
-                </div>
-              )}
-            </CSSTransition>
-          </SwitchTransition>
-        </div>
+      {shouldShowMenu && shouldShowMenuAndHeaderFooter && (
+  <Menu
+  valuenav={routeclass.split("-")[0]}
+  subvalue={routeclass.split("-")[1]}
+  isAdmin={isAdmin}
+  isMobile={isMobile}
+/>
+)}
+
+     
+  
+      {/* Contenido de la página */}
+      <div
+        onScroll={onScroll}
+        onContextMenu={handleRightClick}
+        className={isMobile? "":divClassName}
+      >
+        <SwitchTransition>
+          <CSSTransition
+            key={location.pathname}
+            nodeRef={nodeRef}
+            timeout={200}
+            classNames="page"
+            unmountOnExit
+          >
+            <div ref={nodeRef} className="page">
+              {currentOutlet}
+            </div>
+          </CSSTransition>
+        </SwitchTransition>
       </div>
+  
+    
     </>
   );
+  
 }
+
 
 const container = document.getElementById("root");
 const root = createRoot(container);

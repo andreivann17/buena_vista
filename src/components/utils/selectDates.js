@@ -174,8 +174,8 @@ const CardPoint = ({action}) => {
         <Button onClick={handleAcceptClick}>Accept</Button>
       </Drawer>
       <div className="d-flex justify-content-end">
-      <div style={{ marginTop: 40 }}>
-          <Text className="text-dark marginr-1" style={{fontSize:22}}>{titleDate}</Text>
+      <div style={{ color:"#fff",marginTop: 40 }}>
+          <Text className=" marginr-1" style={{color:"#fff",fontSize:22}}>{titleDate}</Text>
         </div>
         <div className="col-2 " style={{ marginTop: 40 }}>
           <Dropdown overlay={menu}>

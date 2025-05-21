@@ -1,0 +1,91 @@
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  background: #f8f9fa;
+}
+
+.login-logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 120px;
+  z-index: 10;
+}
+
+.login-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+.login-left {
+  flex: 1;
+  padding: 60px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+.login-button {
+  background-color: #2e5f4d;
+  border: none;
+  width: 100%;
+}
+
+.login-button:hover {
+  background-color: #1f4637;
+}
+
+.forgot-password-link {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.link-pointer {
+  cursor: pointer;
+  color: #2e5f4d;
+  font-weight: 500;
+}
+
+.login-right {
+  flex: 1;
+  background: url('../../assets/img/login.jpg') no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+.login-overlay {
+  position: absolute;
+  bottom: 60px;
+  left: 40px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 16px;
+  border-radius: 12px;
+  max-width: 240px;
+}
+.login-form {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto; /* centra horizontalmente */
+}
+
+.login-left {
+  align-items: center; /* centra horizontalmente todo lo interno */
+}
+
+.floating-label, 
+.login-left .form-control {
+  width: 100%;
+  max-width: 400px;
+}
