@@ -56,17 +56,18 @@ function HistoryTable({ data, isAdmin }) {
       }}
     >
       <Table
-        dataSource={data}
-        rowKey="pmb"
-        bordered
-        style={{ minWidth: 600, marginBottom: '30px' }}
-        className="custom-bordered-table"
-        pagination={{ style: { marginTop: '30px' } }}
-        onRow={(record) => ({
-          onMouseEnter: () => setHoveredRowKey(record.pmb),
-          onMouseLeave: () => setHoveredRowKey(null),
-        })}
-      >
+  dataSource={Array.isArray(data) ? data : []}
+  rowKey="pmb"
+  bordered
+  style={{ minWidth: 600, marginBottom: '30px' }}
+  className="custom-bordered-table"
+  pagination={{ style: { marginTop: '30px' } }}
+  onRow={(record) => ({
+    onMouseEnter: () => setHoveredRowKey(record.pmb),
+    onMouseLeave: () => setHoveredRowKey(null),
+  })}
+>
+
         <Column title="Name" dataIndex="name" key="name" />
         <Column title="UserName" dataIndex="username" key="username" />
         <Column title="Email" dataIndex="email" key="email" />

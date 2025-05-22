@@ -1,8 +1,5 @@
 import axios from "axios";
 import { FETCH_SHIPMENT_FAILURE, FETCH_SHIPMENT_SUCCESS } from "./types";
-// Aquí IMPORTAMOS directamente el archivo JSON
-import registros from "./prueba.json";  // Ajusta la ruta si está en otra carpeta
-
 
 
 // Servicio API si en un futuro quieres usarlo
@@ -24,7 +21,7 @@ export const actionShipmentGet = () => {
           Accept: 'application/json',
         }
       });
-      //console.log(response.data.items)
+
       dispatch(fetchShipmentSuccess(response.data.items)); // o response.data.data según tu backend
     } catch (error) {
       dispatch(fetchShipmentFailure(error.response?.data?.detail || error.message));
@@ -41,9 +38,10 @@ export const actionShipmentAdminGet = () => {
           Accept: 'application/json',
         }
       });
-
+      console.log(response.data)
       dispatch(fetchShipmentSuccess(response.data.items)); // o response.data.data según tu backend
     } catch (error) {
+    
       dispatch(fetchShipmentFailure(error.response?.data?.detail || error.message));
     }
   };

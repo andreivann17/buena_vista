@@ -1,7 +1,5 @@
 import axios from "axios";
 import { FETCH_USERS_FAILURE, FETCH_USERS_SUCCESS } from "./types";
-// Aquí IMPORTAMOS directamente el archivo JSON
-import registros from "./prueba.json";  // Ajusta la ruta si está en otra carpeta
 
 // Servicio API si en un futuro quieres usarlo
 const apiService = axios.create({
@@ -12,14 +10,20 @@ const apiService = axios.create({
 });
 
 
-export const actionUsersGet = () => {
+export const actionUsersGet = (id) => {
   return async (dispatch) => {
     try {
+      console.log(id)
       // Si quieres en un futuro hacer petición real, aquí iría
-      // const response = await apiService.get(`shipment/`, { headers: { Authorization: `${token}` } });
+      const token = localStorage.getItem("tokenadmin");
+       const response = await axios.get(`https://bvmailcenter.com:8000/admin/${id}/users`, {"admin_id":id},{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        }
+      });
 
-      // Pero ahora cargamos el archivo local
-      dispatch(fetchUsersSuccess(registros));
+      dispatch(fetchUsersSuccess(response.data.items)); // o response.data.data según tu backend
     } catch (error) {
       dispatch(fetchUsersFailure(error.message));
     }

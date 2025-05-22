@@ -7,7 +7,7 @@ import { useNavigate,useLocation } from "react-router-dom";
 import logo from "./../../assets/img/logo.png";
 import { Collapse,OverlayTrigger,Popover } from "react-bootstrap/";
 import { connect, useDispatch } from "react-redux";
-import {actionInfoUser,actionInfoAdmin} from "../../redux/actions/menus/menus"
+import {actionInfoUser,actionInfoAdmin,actionTokenValidate,actionTokenValidateAdmin} from "../../redux/actions/menus/menus"
 
 const icons = ['fas fa-truck', 'fas fa-money-check-dollar']
 const iconsAdmin = ['fas fa-truck', 'fas fa-user']
@@ -74,6 +74,7 @@ function Navbar({ valuenav,isAdmin,isMobile }) {
     }
     
   }, []);
+
   useEffect(() => {
     const path = window.location.pathname;
     const botonesActuales = isAdmin ? botonesAdmin : botones;
@@ -90,6 +91,38 @@ function Navbar({ valuenav,isAdmin,isMobile }) {
       }
     }
   }, [isAdmin]);
+    const log_out = () =>{
+    
+    if(isAdmin){
+      localStorage.removeItem("tokenadmin");
+    console.log(localStorage.getItem("tokenadmin")); 
+      navigate("/");
+      return
+    }
+    localStorage.removeItem("token");
+    console.log(localStorage.getItem("token")); 
+    navigate("/");
+
+
+  }
+
+    useEffect(() => {
+    
+         if(isAdmin){
+   dispatch(actionTokenValidateAdmin(log_out));
+    }else{
+  dispatch(actionTokenValidate(log_out));
+    }
+  
+
+  
+
+     if (token == null) {
+      
+      navigate("/");
+    }
+  }, [token]);
+  
   
   
   

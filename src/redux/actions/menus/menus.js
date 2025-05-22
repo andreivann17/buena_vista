@@ -18,7 +18,46 @@ export const actionInfoAdmin = () => {
     }
   };
 };
+export const actionTokenValidate = (callback401) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get('https://bvmailcenter.com:8000/user/me', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        }
+      });
 
+    } catch (error) {
+      
+        if(error.request.status){
+callback401()
+      }
+      dispatch(fetchUserFailure(error.response?.data?.detail || error.message));
+    }
+  };
+};
+export const actionTokenValidateAdmin = (callback401) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("tokenadmin");
+      const response = await axios.get('https://bvmailcenter.com:8000/admin/me', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        }
+      });
+
+    } catch (error) {
+      
+        if(error.request.status){
+callback401()
+      }
+      dispatch(fetchUserFailure(error.response?.data?.detail || error.message));
+    }
+  };
+};
 export const actionInfoUser = () => {
   return async (dispatch) => {
     try {

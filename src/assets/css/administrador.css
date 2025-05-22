@@ -338,7 +338,26 @@ select:disabled {
       transform: translateY(0);
     }
   }
-  
+  .custom-history-table .ant-table-thead > tr > th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  border-bottom: 1.5px solid #121212 !important;
+}
+
+.custom-history-table .ant-table-tbody > tr > td {
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.custom-history-table .ant-table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.custom-history-table .ant-table-tbody > tr:hover > td {
+  background-color: #e6f7ff;
+}
+
 .text-underline:hover{
 text-decoration: underline;
 cursor: pointer;

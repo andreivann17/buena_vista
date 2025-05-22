@@ -8,7 +8,7 @@ export const actionContact = (data,callback,callbackError) => {
             "subject": data.subject,
             "message": data.message,
           }
-      const response = await axios.post('http://191.101.14.88:8000/user/contact',data, {
+      const response = await axios.post('https://bvmailcenter.com:8000/user/contact',data, {
         headers: {
     
           Accept: 'application/json',

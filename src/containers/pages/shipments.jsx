@@ -10,6 +10,7 @@ import "../../assets/css/shipments.css"
 import RecordFilter from "../../components/offCanvas/recordFilter.js";
 import { actionShipmentGet,actionShipmentAdminGet } from "../../redux/actions/shipments/shipments.js";
 import { SearchOutlined,EllipsisOutlined } from '@ant-design/icons';
+import backgroundImage from "../../assets/img/shipments.jpg"
 
 const { RangePicker } = DatePicker;
 
@@ -18,10 +19,12 @@ const backgroundStyle = {
   top: 0,
   left: 0,
   height: "100%",
+  minHeight:"160px",
   color:"white",
-  borderRadius:12,
+ 
   width: "100%",
-  background: "linear-gradient(90deg, rgba(38, 131, 198, 0.94) 100%, rgba(38, 131, 198, 0) 100%)",
+    background: 'linear-gradient(90deg, rgba(0, 0, 0, 0.5) 70%, rgba(180, 180, 180, 0.7) 100%)', // Utiliza un gradiente lineal
+
 };
 
 function Home({ shipments,infoUser,infoAdmin }) {
@@ -130,22 +133,22 @@ const cardStyle = {
 
   backgroundSize: '100%', // Incrementa este valor para reducir el "zoom" de la imagen
   backgroundPosition: 'center', 
-  backgroundPositionY:"-380px",
+  backgroundPositionY:"-580px",
  
-
-  borderRadius:20,
   borderTop:0,
   borderLeft:0,
   borderRight:0,
   color:"white",
- 
+   backgroundImage: `url(${backgroundImage})`,
+    color: 'white',
+    height:270,
 
 };
 
 const contentStyle = {
   position: 'relative',  // Esto asegura que el texto esté por encima del fondo oscurecido
 };
-console.log(infoAdmin)
+console.log(token)
   return (
     <>
       {token != null && (
@@ -160,7 +163,7 @@ console.log(infoAdmin)
 />
 
           <Header title="Shipments" icon="fas fa-truck marginr-1" />
-          <div className="h-100" style={{ padding: "20px"}}>
+          <div className="h-100" >
     <CardBootrap style={cardStyle} className="">
     <div style={backgroundStyle}></div>
     <div className="h-100" style={contentStyle}>
@@ -174,7 +177,7 @@ console.log(infoAdmin)
                {
                 isAdmin ? (
                   <div className="">
-                  <h5 style={{fontWeight:600}}>{infoAdmin.nombre + " " + infoAdmin.apellido}</h5>
+                  <h5 style={{ fontWeight:600}}>{infoAdmin.nombre + " " + infoAdmin.apellido}</h5>
                 
                  
                 
@@ -182,7 +185,7 @@ console.log(infoAdmin)
                   <div className="mt-2">
                     <span 
                       className="logout-link "
-                      style={{color:"#dedede"}} 
+                      style={{color:"cecece"}} 
                       onClick={log_out_click}
                     >
                    Log out?
@@ -194,7 +197,7 @@ console.log(infoAdmin)
                   <h5 style={{fontWeight:600}}>{infoUser.nombre + " " + infoUser.apellido}</h5>
                 
                   <div className="d-flex justify-content-start">
-                    <h5 className="marginr-1">PMB: </h5>
+                    <h5 className="marginr-1" style={{}} >PMB: </h5>
                     <h5>{infoUser.pmb}</h5>
                   </div>
                 
@@ -202,6 +205,7 @@ console.log(infoAdmin)
                   <div className="mt-2">
                     <span 
                       className="logout-link" 
+                        style={{}} 
                       onClick={log_out_click}
                     >
                    Log out?
@@ -263,7 +267,7 @@ console.log(infoAdmin)
   onClick={() => handleFilter(filterValues)}
   type="primary"
   style={{ minWidth: "120px" }}
-  className="custom-button-secondary"
+  className="custom-button"
 >
   <i className="fas fa-search marginr-1"></i> Search
 </Button>

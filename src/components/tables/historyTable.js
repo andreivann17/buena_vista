@@ -3,15 +3,26 @@ import { Table } from 'antd';
 
 const { Column } = Table;
 
+// Función auxiliar para formatear fechas a yyyy/mm/dd
+const formatDate = (dateStr) => {
+  if (!dateStr || dateStr === '0000-00-00') return '';
+  const date = new Date(dateStr);
+  if (isNaN(date)) return '';
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
+
 function HistoryTable({ data, isAdmin }) {
   const mappedData = Array.isArray(data)
     ? data.map(item => ({
         RecordNumber: item.registro,
         pmb: item.pmb,
-        ReceivedDate: item.fecharecibido,
+        ReceivedDate: formatDate(item.fecharecibido),
         Name: item.nombre,
         code: item.codigoenvio,
-        DeliveryDate: item.fechaentrega,
+        DeliveryDate: formatDate(item.fechaentrega),
         DeliveredBy: item.nombreentregado,
       }))
     : [];
@@ -26,6 +37,7 @@ function HistoryTable({ data, isAdmin }) {
         dataSource={mappedData}
         rowKey="RecordNumber"
         bordered
+        className="custom-history-table"
         style={{ minWidth: 600, marginBottom: '30px' }}
         pagination={{ style: { marginTop: '30px' } }}
       >

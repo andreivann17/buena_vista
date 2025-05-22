@@ -6,8 +6,10 @@ import { useNavigate,useLocation } from "react-router-dom";
 import UsersTable from "../../components/tables/usersTable.js";
 import { Button,Card,Input,DatePicker } from 'antd';
 import RecordFilter from "../../components/offCanvas/recordFilter.js";
-import { actionUsersGet } from "../../redux/actions/users/users.js";
+import { actionUsersGet, } from "../../redux/actions/users/users.js";
 import { SearchOutlined,EllipsisOutlined } from '@ant-design/icons';
+import {actionInfoAdmin,actionTokenValidate,actionTokenValidateAdmin} from "../../redux/actions/menus/menus"
+import backgroundImage from "../../assets/img/users.jpg"
 
 const { RangePicker } = DatePicker;
 
@@ -16,13 +18,15 @@ const backgroundStyle = {
   top: 0,
   left: 0,
   height: "100%",
+  minHeight:"160px",
   color:"white",
-  borderRadius:12,
+ 
   width: "100%",
-  background: "linear-gradient(90deg, rgba(38, 131, 198, 0.94) 100%, rgba(38, 131, 198, 0) 100%)",
+    background: 'linear-gradient(90deg, rgba(0, 0, 0, 0.6) 70%, rgba(0, 0, 0, 0) 100%)', // Utiliza un gradiente lineal
+
 };
 
-function Home({ users }) {
+function Home({ users,infoAdmin }) {
   const [showFilter, setShowFilter] = useState(false);
   const location = useLocation()
   const [isMobile, setIsMobile] = useState(false); // 🔥 Estado para detectar si es móvil
@@ -37,9 +41,6 @@ function Home({ users }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(actionUsersGet());
-  }, [dispatch]);
 
   useEffect(() => {
     if (token == null) {
@@ -52,7 +53,10 @@ function Home({ users }) {
       setFilteredData(users);
     }
   }, [users]);
-
+  useEffect(() => {
+    dispatch(actionInfoAdmin());
+    
+  }, []);
 useEffect(() => {
   const handleResize = () => {
     setIsMobile(window.innerWidth < 768);
@@ -61,6 +65,17 @@ useEffect(() => {
   handleResize(); // Ejecutarlo al montar
   return () => window.removeEventListener('resize', handleResize);
 }, []);
+  useEffect(() => {
+       if(isAdmin){
+        console.log(infoAdmin)
+      dispatch(actionUsersGet(infoAdmin["id"]));
+    }else{
+            dispatch(actionUsersGet(infoAdmin));
+    }
+
+  }, [infoAdmin]);
+
+
 const handleFilter = ({ pmb,username }) => {
   console.log(pmb)
   console.log(username)
@@ -108,7 +123,7 @@ const handleFilter = ({ pmb,username }) => {
 />
 
           <Header title="Users" icon="fas fa-truck marginr-1" />
-          <Contenido backgroundStyle={backgroundStyle} title="Users" icon="fas fa-users marginr-1" />
+          <Contenido backgroundStyle={backgroundStyle} backgroundImage={backgroundImage} title="Users" icon="fas fa-users marginr-1" />
           <div className="Panel_Contenido marginb-5">
          
         
@@ -142,7 +157,7 @@ const handleFilter = ({ pmb,username }) => {
   onClick={() => handleFilter(filterValues)}
   type="primary"
   style={{ minWidth: "120px" }}
-  className="custom-button-secondary"
+  className="custom-button"
 >
   <i className="fas fa-search marginr-1"></i> Search
 </Button>
@@ -175,6 +190,8 @@ const handleFilter = ({ pmb,username }) => {
 
 const mapStateToProps = (state) => ({
   users: state.users.data, // <-- Aquí conectamos los datos de Redux
+  infoAdmin: state.menus.infoAdmin ?? {id:"",nombre:"",pmb:"",apellido:"",email:""},
+
 });
 
 export default connect(mapStateToProps)(Home);
