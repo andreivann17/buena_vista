@@ -12,7 +12,6 @@ const backgroundStyle = {
   left: 0,
   height: "100%",
   color: "white",
-  borderRadius:12,
   width: "100%",
   background: "linear-gradient(90deg, rgba(38, 131, 198, 0.94) 100%, rgba(38, 131, 198, 0) 100%)",
 };
@@ -31,7 +30,7 @@ const PaymentForm = (props) => {
       setData(props.payment); // <<== Ahora directamente a data
     }
   }, [props.payment]);
-
+ console.log(data)
   return (
     <>
       {token && data && (
@@ -57,23 +56,26 @@ const PaymentForm = (props) => {
                 flex: '1 1 300px',
                 minHeight: '450px',
                 boxShadow: '0px 4px 10px rgba(0,0,0,0.2)',
-                borderRadius: '8px',
+           
                 fontSize: '18px'
               }}
             >
               
               <div style={{ marginBottom: '14px' }}>
                 <strong>Name:</strong><br />
-                <h6>{data.name + " " + data.lastName}</h6>
+                <h6>{props.infoUser.nombre + " " + props.infoUser.apellido}</h6>
               </div>
               <div style={{ marginBottom: '14px' }}>
                 <strong>Date:</strong><br />
                 <h6>{new Date().toLocaleDateString()}</h6>
               </div>
-
+              <div style={{ marginBottom: '14px' }}>
+                <strong>PMB:</strong><br />
+                <h6>{props.infoUser.pmb}</h6>
+              </div>
               <div style={{ marginBottom: '14px' }}>
                 <strong>Email:</strong><br />
-                <h6>{data.email}</h6>
+                <h6>{props.infoUser.email}</h6>
               </div>
             </Card>
 
@@ -87,7 +89,7 @@ const PaymentForm = (props) => {
               boxShadow: '0px 4px 10px rgba(0,0,0,0.2)',
               fontSize: '18px'
             }}>
-              <FormPayment />
+              <FormPayment conceptsData={data} />
             </div>
           </div>
         </>
@@ -98,6 +100,7 @@ const PaymentForm = (props) => {
 
 const mapStateToProps = (state) => ({
   payment: state.payment.data,
+  infoUser: state.menus.infoUser ?? {id:"",nombre:"",pmb:"",apellido:"",email:""},
 });
 
 export default connect(mapStateToProps)(PaymentForm);

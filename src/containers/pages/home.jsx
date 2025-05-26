@@ -14,6 +14,7 @@ import Header from "../../components/navigation/header"
 import Footer from "../../components/navigation/footer"
 import ReCAPTCHA from "react-google-recaptcha";
 
+import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 
 function Home({}) {
@@ -35,6 +36,31 @@ const recaptchaRef = useRef();
 const [captchaValue, setCaptchaValue] = useState(null);
 const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 400);
 
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
+  const handleSubmit = async () => {
+    try {
+      await form.validateFields();
+      const values = form.getFieldsValue();
+
+      if (!values.message || values.message.trim().length <= 10) {
+        notification.error({ message: 'Error', description: 'The message must be longer than 10 characters.' });
+        return;
+      }
+
+      if (!executeRecaptcha) {
+        notification.error({ message: 'Error', description: 'Captcha is not ready.' });
+        return;
+      }
+
+      const token = await executeRecaptcha('contact_form');
+      values.captcha = token;
+
+      dispatch(actionContact(values, callbackContact, callbackContactError));
+    } catch {
+      notification.error({ message: 'Error', description: 'Please complete all fields correctly.' });
+    }
+  };
 useEffect(() => {
   const handleResize = () => {
     setIsSmallScreen(window.innerWidth <= 400);
@@ -396,10 +422,11 @@ const checkFields = async () => {
     <div style={styles.textContainer}>
     
       <div style={{fontSize:"22px"}}>
-        <p><strong>Address:</strong> 689 N Main St Suite 2, 85336 ,San Luis, Arizona, USA</p>
+        <p><strong>Address:</strong> 689 N Main St Suite 2San Luis, Arizona 85336 United States</p>
         <p><strong>Phone:</strong> +1 928 550 5039</p>
         <p><strong>Email:</strong> buenavistamailc@gmail.com</p>
-        <p><strong>Hours:</strong> Monday to Friday: 9:00 AM - 5:00 PM</p>
+        <p>Monday to Friday</p>
+        <p><strong>Hours:</strong> 9:00 AM - 5:00 PM</p>
       </div>
     </div>
     <div style={styles.imageContainer}>
@@ -411,7 +438,52 @@ const checkFields = async () => {
 
 
      {/* Sección del mapa (Contact) */}
-<section ref={contactRef} style={styles.infoSection}>
+<section ref={contactRef} style={styles.contactSection}>
+<h2 style={styles.sectionTitle}>
+Send Us a Message
+    <div style={styles.underline}></div>
+  </h2>
+        <div style={styles.infoContainer}>
+
+
+          {/* Contact Form */}
+          <div style={styles.imageContainer}>
+            <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>
+                      <GoogleReCaptchaProvider reCaptchaKey="6Le0ZUArAAAAAB3dG_M_Lgc7sk9fwEj94KCDFco6">
+              <AntForm   scrollToFirstError form={form} layout="vertical">
+                <AntForm.Item rules={[{ required: true, message: 'Please input your name!' }]} name="name" label="Name">
+                  <Input placeholder="Your Name" />
+                </AntForm.Item>
+                <AntForm.Item
+                  rules={[{ required: true, message: 'Please enter your phone number!' }]}
+                  name="phone"
+                  label="Phone Number"
+                >
+                  <Input placeholder="Your phone number" type="tel" />
+                </AntForm.Item>
+
+                <AntForm.Item required name="subject" label="Subject">
+                  <Input placeholder="Subject" />
+                </AntForm.Item>
+                <AntForm.Item rules={[{ required: true, message: 'Please input your message!' }]} name="message" label="Message">
+                  <Input.TextArea placeholder="Write your message here..." rows={5} />
+                </AntForm.Item>
+       
+
+                <AntForm.Item>
+                  <Button className="custom-button" onClick={handleSubmit} type="primary" htmlType="submit" style={styles.sendButton}>
+                    SEND
+                  </Button>
+                </AntForm.Item>
+              
+              </AntForm>
+                </GoogleReCaptchaProvider>
+            </div>
+          </div>
+        </div>
+      </section>
+    {/* Sección del mapa (Contact) */}
+<section ref={contactRef} style={styles.mapSection}>
 <h2 style={styles.sectionTitle}>
    Visit Us
     <div style={styles.underline}></div>
@@ -434,43 +506,7 @@ const checkFields = async () => {
         </div>
           </div>
 
-          {/* Contact Form */}
-          <div style={styles.imageContainer}>
-            <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>
-              <h2 style={{ color: '#003366', marginBottom: 20 ,fontWeight:550}}>Send Us a Message</h2>
-              <AntForm   scrollToFirstError form={form} layout="vertical">
-                <AntForm.Item rules={[{ required: true, message: 'Please input your name!' }]} name="name" label="Name">
-                  <Input placeholder="Your Name" />
-                </AntForm.Item>
-                <AntForm.Item
-                  rules={[{ required: true, message: 'Please enter your phone number!' }]}
-                  name="phone"
-                  label="Phone Number"
-                >
-                  <Input placeholder="Your phone number" type="tel" />
-                </AntForm.Item>
-
-                <AntForm.Item required name="subject" label="Subject">
-                  <Input placeholder="Subject" />
-                </AntForm.Item>
-                <AntForm.Item rules={[{ required: true, message: 'Please input your message!' }]} name="message" label="Message">
-                  <Input.TextArea placeholder="Write your message here..." rows={5} />
-                </AntForm.Item>
-                <AntForm.Item>
-    <ReCAPTCHA
-      sitekey="6Le0ZUArAAAAAB3dG_M_Lgc7sk9fwEj94KCDFco6"
-      onChange={onCaptchaChange}
-      ref={recaptchaRef}
-    />
-  </AntForm.Item>
-                <AntForm.Item>
-                  <Button className="custom-button" onClick={acceptButtonHandler} type="primary" htmlType="submit" style={styles.sendButton}>
-                    SEND
-                  </Button>
-                </AntForm.Item>
-              </AntForm>
-            </div>
-          </div>
+    
         </div>
       </section>
    
@@ -631,6 +667,14 @@ const styles = {
    
     infoSection: {
       padding: '60px 20px',
+     backgroundColor: '#e5e9eb'
+    },
+     mapSection: {
+      padding: '60px 20px',
+     backgroundColor: '#e5e9eb'
+    },
+     contactSection: {
+      padding: '60px 20px',
      backgroundColor: '#e1f1fc'
     },
     infoContainer: {
@@ -657,10 +701,7 @@ const styles = {
       borderRadius: '10px'
     }
     ,
-    mapSection: {
-      padding: '60px 20px',
-      backgroundColor: '#e1f1fc'
-    },
+   
     mapContainer: {
       width: '100%',
       maxWidth: '1200px',

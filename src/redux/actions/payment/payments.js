@@ -11,27 +11,64 @@ const apiService = axios.create({
 
 export const actionPaymentGet = () => {
   return async (dispatch) => {
-    try {
-      // Si quieres en un futuro hacer petición real, aquí iría
-      // const response = await apiService.get(`shipment/`, { headers: { Authorization: `${token}` } });
+      try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get('https://bvmailcenter.com:8000/payments/concepts', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        }
+      });
 
-     // dispatch(fetchPaymentSuccess(registros));
+      dispatch(fetchPaymentSuccess(response.data)); // o response.data.data según tu backend
     } catch (error) {
-      dispatch(fetchPaymentFailure(error.message));
+      dispatch(fetchPaymentFailure(error.response?.data?.detail || error.message));
     }
   };
 };
-export const actionPaymentPost = (data,callback,callbackError) => {
+
+export const actionPaymentCreate = (amount, concept, description) => {
   return async (dispatch) => {
     try {
-      // Si quieres en un futuro hacer petición real, aquí iría
-      // const response = await apiService.post(`shipment/`, { headers: { Authorization: `${token}` } });
-
-      // Pero ahora cargamos el archivo local
-      //dispatch(fetchPaymentSuccess(registros));
-      callback()
+      const token = localStorage.getItem("token");
+      const response = await axios.post('https://bvmailcenter.com:8000/payments/execute', {
+  "concept": concept,
+  "amount": amount,
+  "description": description,
+},{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        }
+      });
+ 
+      //dispatch(fetchPaymentSuccess(response.data)); // o response.data.data según tu backend
     } catch (error) {
-      dispatch(callbackError(error.message));
+   
+      //dispatch(fetchPaymentFailure(error.response?.data?.detail || error.message));
+    }
+  };
+};
+
+
+export const actionPaymentExecute = (data,callback,callbackError) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post('https://bvmailcenter.com:8000/payments/execute', JSON.stringify({
+        payment_id: data.orderID,
+        payer_id: data.payerID
+      }),{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        }
+      });
+      callback()
+      //dispatch(fetchPaymentSuccess(response.data)); // o response.data.data según tu backend
+    } catch (error) {
+      callbackError()
+      //dispatch(fetchPaymentFailure(error.response?.data?.detail || error.message));
     }
   };
 };

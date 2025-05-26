@@ -21,9 +21,9 @@ function Footer() {
       <div style={styles.column}>
         <h3 style={styles.columnTitle}>How to Reach Us</h3>
         <ul style={styles.contactList}>
-          <li><PhoneOutlined /> Call Us Today<br /><strong>1 928 550 5039</strong></li>
-          <li><MailOutlined /> Send Us an Email<br />buenavistamailc@gmail.com</li>
-          <li><ClockCircleOutlined /> Support Hours<br />Monday to Friday: 9:00 AM - 5:00 PM</li>
+          <li><PhoneOutlined /> Call Us Today<br /><strong>+1 928 550 5039</strong></li>
+          <li><MailOutlined /> Send Us an Email<br />admin@bvmailcenter.com</li>
+          <li><ClockCircleOutlined /> Support Hours<br />  9:00 AM - 5:00 PM (Monday to Friday). </li>
         </ul>
         <div style={styles.socialIcons}>
           <a href="https://www.facebook.com/PoBox990" target="_blank" rel="noopener noreferrer">
