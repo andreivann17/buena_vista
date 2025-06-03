@@ -88,7 +88,58 @@ export const actionSignUp = (parametros, callback, callbackError) => {
     }
   };
 };
+export const actionConfirm = (parametros,token, callback, callbackError) => {
+  return async (dispatch) => {
+    try {
+      const body = {
 
+ 
+        token: token,
+        new_password: parametros.password,
+      };
+
+      const response = await axios.post(
+        "https://bvmailcenter.com:8000/auth/user-reset-password/confirm",
+        body,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      callback(); // o ajusta según lo que devuelva tu backend
+    } catch (error) {
+      callbackError(error?.response?.data.detail || error.messag);
+    }
+  };
+};
+export const actionReset = (parametros, callback, callbackError) => {
+  return async (dispatch) => {
+    try {
+      const body = {
+
+ 
+        email:  parametros.email,
+  
+      };
+
+      const response = await axios.post(
+        "https://bvmailcenter.com:8000/auth/user-reset-password",
+        body,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      callback(); // o ajusta según lo que devuelva tu backend
+    } catch (error) {
+      callbackError();
+    }
+  };
+};
 export const actionEmail = (parametros,callback,callbackError) => {
   return async (dispatch) => {
     try {

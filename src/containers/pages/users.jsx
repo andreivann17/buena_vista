@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/navigation/headerDashboard.jsx";
-import Contenido from "../../components/navigation/contentDashboard.jsx";
 import { connect, useDispatch } from "react-redux";
 import { useNavigate,useLocation } from "react-router-dom";
 import UsersTable from "../../components/tables/usersTable.js";
@@ -8,9 +7,9 @@ import { Button,Card as Cardant,Input,DatePicker } from 'antd';
 import {Card as CardBootrap} from "react-bootstrap/";
 import RecordFilter from "../../components/offCanvas/recordFilter.js";
 import { actionUsersGet, } from "../../redux/actions/users/users.js";
-import { SearchOutlined,EllipsisOutlined } from '@ant-design/icons';
-import {actionInfoAdmin,actionTokenValidate,actionTokenValidateAdmin} from "../../redux/actions/menus/menus"
-import backgroundImage from "../../assets/img/users.jpg"
+import { EllipsisOutlined } from '@ant-design/icons';
+import {actionInfoAdmin} from "../../redux/actions/menus/menus"
+import backgroundImage from "../../assets/img/users.webp"
 
 const { RangePicker } = DatePicker;
 

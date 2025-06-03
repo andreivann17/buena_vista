@@ -8,8 +8,7 @@ import {
   Form
 } from 'antd';
 import logo from "../../assets/img/logo.png";
-import logo2 from "../../assets/img/login.jpg";
-import axios from "axios";
+import logo2 from "../../assets/img/login.webp";
 import ModalOlvidar from "../../components/modals/modalOlvidarPassword";
 import {  actionSignUp} from "../../redux/actions/login/login";
 function Home() {

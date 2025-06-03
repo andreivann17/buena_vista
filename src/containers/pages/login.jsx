@@ -3,8 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { notification, Button } from "antd";
 import logo from "../../assets/img/logo.png";
-import logo2 from "../../assets/img/login.jpg";
-import { actionLogin, actionLoginAdmin } from "../../redux/actions/login/login";
+import logo2 from "../../assets/img/login.webp";
+import {  actionLoginAdmin } from "../../redux/actions/login/login";
 import { Form, FloatingLabel } from 'react-bootstrap';
 import ModalOlvidar from "../../components/modals/modalOlvidarPassword";
 

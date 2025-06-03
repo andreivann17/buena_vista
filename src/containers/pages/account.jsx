@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Button, Card as Cardant, Input, DatePicker, Form, notification } from 'antd';
 import { Card as CardBootrap } from "react-bootstrap/";
 import { actionUsersAdminUpdate, actionUsersGet, actionUsersUpdate } from "../../redux/actions/users/users.js";
-import backgroundImage from "../../assets/img/users.jpg"
+import backgroundImage from "../../assets/img/users.webp"
 
 const { RangePicker } = DatePicker;
 
@@ -21,7 +21,7 @@ const backgroundStyle = {
 
 };
 const cardStyle = {
-  backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0.6) 70%, rgba(0, 0, 0, 0.7) 100%), url(${backgroundImage})`,
+  background: "linear-gradient(90deg, rgba(25, 94, 143, 0.94) 100%, rgba(38, 131, 198, 0) 100%)",
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover', // Puedes usar '100%' si prefieres que no haga zoom
   backgroundPosition: 'center',

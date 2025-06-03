@@ -5,7 +5,7 @@ import Header from "../../components/navigation/header";
 import Footer from "../../components/navigation/footer";
 import { Button, Input, Form,notification } from "antd";
 import backgroundImage from "../../assets/img/contact.jpg"; // Tu imagen correcta
-import localImage from "../../assets/img/buena_vista.jpg"; // Imagen del local (opcional)
+import localImage from "../../assets/img/buena_vista.webp"; // Imagen del local (opcional)
 import axios from "axios";
 function Contact({}) {
   const [form] = Form.useForm();

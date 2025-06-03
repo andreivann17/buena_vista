@@ -1,18 +1,18 @@
 import { connect, useDispatch } from "react-redux";
-import backgroundImage from "../../assets/img/city.jpg"; // <<<<<< Cambia esto si tu imagen está en otro folder
+import backgroundImage from "../../assets/img/city.webp"; // <<<<<< Cambia esto si tu imagen está en otro folder
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Form as AntForm, Input, Button, notification } from "antd";
 import { Form as BootstrapForm, FloatingLabel } from "react-bootstrap";
-import localImage from "../../assets/img/buena_vista.jpg"; // Imagen del local (opcional)
+import localImage from "../../assets/img/buena_vista.webp"; // Imagen del local (opcional)
 import axios from "axios";
-import { actionLogin,actionLoginAdmin } from "../../redux/actions/login/login";
-import { CheckCircleOutlined } from '@ant-design/icons';
+import { actionLogin } from "../../redux/actions/login/login";
 import { actionContact } from "../../redux/actions/utils/contact";
 import "../../assets/css/login.css"
 import Header from "../../components/navigation/header"
 import Footer from "../../components/navigation/footer"
 import ReCAPTCHA from "react-google-recaptcha";
+import ModalOlvidar from "../../components/modals/modalOlvidarPassword";
 
 
 function Home({}) {
@@ -218,7 +218,7 @@ const checkFields = async () => {
   return (
     <>
 
-  
+   <ModalOlvidar show={show} setShow={setShow} />
       {/* Hero Section */}
       <main  style={styles.mainContent}>
       <Header

@@ -16,6 +16,7 @@ import Shipments from "./containers/pages/shipments";
 import Users from "./containers/pages/users";
 import Payment from "./containers/pages/payment";
 import Account from "./containers/pages/account";
+import UserReset from "./containers/pages/userReset";
 import Pricing from "./containers/pages/pricing";
 import Location from "./containers/pages/location";
 import Contact from "./containers/pages/contact";
@@ -31,8 +32,8 @@ import store from "./store";
 import { Provider, useDispatch } from "react-redux";
 import Footer from "./components/navigation/footer";
 import Header from "./components/navigation/header";
-const pagesWithoutMenuAndDiv = ["*","/location","/contact","/pricing","/login", "/signup", "/admin/login",""];
-const pagesWithoutMenuAndHeader = ["/login", "/signup", "/admin/login"];
+const pagesWithoutMenuAndDiv = ["*","/location","/contact","/pricing","/login", "/signup", "/admin/login","/auth/user-reset-password/confirm",""];
+const pagesWithoutMenuAndHeader = ["/login", "/signup", "/admin/login","/auth/user-reset-password/confirm",""];
 
 const routes = [
   {
@@ -51,14 +52,16 @@ const routes = [
     nodeRef: createRef(),
     className: "Account",
   },    
-  {
-    path: "/account",
-    value: "account-0",
-    name: "Account",
-    element: <Account />,
-    nodeRef: createRef(),
-    className: "Account",
-  }, 
+{
+  path: "/auth/user-reset-password/confirm",
+  value: "userReset-0",
+  name: "UserReset",
+  element: <UserReset />,
+  nodeRef: createRef(),
+  className: "UserReset",
+},
+
+
   {
     path: "/admin/account",
     value: "account-0",
@@ -196,6 +199,8 @@ function Example() {
   const isNotFoundPage = !routecorrect; // Si no encuentra ruta, asumimos que es 404
   const shouldShowMenu = !isNotFoundPage && !pagesWithoutMenuAndDiv.includes(pathname);
   const shouldShowMenuAndHeaderFooter = !pagesWithoutMenuAndHeader.includes(pathname);
+  console.log(shouldShowMenuAndHeaderFooter)
+  console.log(shouldShowMenu)
   
   const divClassName = shouldShowMenu ? "div_contentmaster" : "";
   

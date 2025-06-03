@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Header from "../../components/navigation/headerDashboard.jsx";
-import Contenido from "../../components/navigation/contentDashboard.jsx";
 import { connect, useDispatch } from "react-redux";
 import { useNavigate,useLocation } from "react-router-dom";
 import HistoryTable from "../../components/tables/historyTable.js";
@@ -9,8 +8,8 @@ import {Card as CardBootrap} from "react-bootstrap/";
 import "../../assets/css/shipments.css"
 import RecordFilter from "../../components/offCanvas/recordFilter.js";
 import { actionShipmentGet,actionShipmentAdminGet } from "../../redux/actions/shipments/shipments.js";
-import { SearchOutlined,EllipsisOutlined } from '@ant-design/icons';
-import backgroundImage from "../../assets/img/shipments.jpg"
+import { EllipsisOutlined } from '@ant-design/icons';
+import backgroundImage from "../../assets/img/shipments.webp"
 
 const { RangePicker } = DatePicker;
 

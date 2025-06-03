@@ -1,12 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import Header from "../../components/navigation/header";
-import Footer from "../../components/navigation/footer";
-import { Button } from "antd";
-import { CheckCircleOutlined } from '@ant-design/icons';
 import backgroundImage from "../../assets/img/location.jpg"; 
-import localImage from "../../assets/img/buena_vista.jpg"; // <<-- Nueva imagen del local
+import localImage from "../../assets/img/buena_vista.webp"; // <<-- Nueva imagen del local
 
 function Location({}) {
   return (

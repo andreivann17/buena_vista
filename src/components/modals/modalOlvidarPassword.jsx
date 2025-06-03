@@ -1,21 +1,21 @@
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import { Modal, Button, Row, Input, notification } from "antd";
-import Modalmensaje from "./modalMensaje"
-import Modalenter from "./modalEnterCode"
-import { actionEmail } from "../../redux/actions/login/login"
+import { actionReset } from "../../redux/actions/login/login"
 import { useDispatch } from "react-redux";
 
 import { FloatingLabel, Form } from "react-bootstrap";
 function Home({ show, setShow }) {
   const [email, setEmail] = useState("")
-  const [msg, setMsg] = useState("")
-  const [showmsg, setShowmsg] = useState(false)
-  const [showenter, setShowenter] = useState(false)
-  const [clave, setClave] = useState("")
   const dispatch = useDispatch()
   const inputRef = useRef(null);
 
+  const openNotification = (msg) => {
+    notification.error({
+      message: "Error",
+      description: msg,
+    });
+  };
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault(); 
@@ -25,35 +25,31 @@ function Home({ show, setShow }) {
 
   const btn_aceptar = () => {
     if (email.trim().length == 0) {
-      setMsg("You cannot leave empty field")
-      setShowmsg(true)
+      openNotification("You cannot leave empty field")
       return
     }
     var parametros = {
       email: email
     };
-    dispatch(actionEmail(parametros, callback, callbackError));
+    dispatch(actionReset(parametros, callback, callbackError));
   }
-
-  const callback = (value) => {
-    if (value.status == false) {
-      callbackError()
-      return
-    }
-    setShow(false)
-    setShowenter(true)
-    setClave(value.clave)
+const openNotificationSuccess = () => {
+  notification.success({
+    message: "Email Sent",
+    description: "A password recovery link has been sent to the email address you provided.",
+  });
+};
+  const callback = () => {
+       openNotificationSuccess("A password recovery link has been sent to the email address you provided.");
   }
 
   const callbackError = () => {
-    setMsg("Nonexistent email")
-    setShowmsg(true)
+    openNotification("Nonexistent email")
+
   }
 
   return (
     <>
-      <Modalmensaje show={showmsg} setShow={setShowmsg} msg={msg} />
-      <Modalenter show={showenter} setShow={setShowenter} email={email} />
       <Modal
         title="Password Recovery"
         visible={show}

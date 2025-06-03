@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Button,Card as Cardant,Input,DatePicker } from 'antd';
 import {Card as CardBootrap} from "react-bootstrap/";
 import Header from "../../components/navigation/headerDashboard.jsx";
-import Contenido from "../../components/navigation/contentDashboard.jsx";
 import FormPayment from "../../components/forms/payment.js";
 import { connect, useDispatch } from 'react-redux';
 import { actionPaymentGet } from "../../redux/actions/payment/payments.js";
