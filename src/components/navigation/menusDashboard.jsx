@@ -9,16 +9,18 @@ import { Collapse,OverlayTrigger,Popover } from "react-bootstrap/";
 import { connect, useDispatch } from "react-redux";
 import {actionInfoUser,actionInfoAdmin,actionTokenValidate,actionTokenValidateAdmin} from "../../redux/actions/menus/menus"
 
-const icons = ['fas fa-truck', 'fas fa-money-check-dollar']
-const iconsAdmin = ['fas fa-truck', 'fas fa-user']
+const icons = ['fas fa-truck', 'fas fa-money-check-dollar', 'fas fa-user']
+const iconsAdmin = ['fas fa-truck', 'fas fa-users', 'fas fa-user']
 const botones = [
   [["Shipments", "/shipments"], []],
   [["Payment", "/payment"], []],
+   [["Account", "/account"], []],
 ];
 
 const botonesAdmin = [
   [["Shipments", "/admin/shipments"], []],
   [["Users", "/admin/users"], []],
+  [["Account", "/admin/account"], []],
 ];
 
 function Navbar({ valuenav,isAdmin,isMobile }) {
@@ -95,12 +97,10 @@ function Navbar({ valuenav,isAdmin,isMobile }) {
     
     if(isAdmin){
       localStorage.removeItem("tokenadmin");
-    console.log(localStorage.getItem("tokenadmin")); 
       navigate("/");
       return
     }
     localStorage.removeItem("token");
-    console.log(localStorage.getItem("token")); 
     navigate("/");
 
 

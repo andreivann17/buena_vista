@@ -26,7 +26,6 @@ export const actionLogin = (parametros, callback, callbackError) => {
 
       callback(response.data.access_token);
     } catch (error) {
-      console.log(error.message);
       callbackError("Email or password does not match");
     }
   };
@@ -57,29 +56,39 @@ export const actionLoginAdmin = (parametros, callback, callbackError) => {
 
       callback(response.data.access_token);
     } catch (error) {
-      console.log(error.message);
       callbackError("Email or password does not match");
     }
   };
 };
-
-export const actionSignUp = (parametros,callback,callbackError) => {
+export const actionSignUp = (parametros, callback, callbackError) => {
   return async (dispatch) => {
     try {
-      const response = await apiServiceNoToken.fetchData(
-        `http://${window.location.hostname}:5000/api/users/signup/`,
-        parametros
+      const body = {
+
+        nombre: parametros.firstName,
+        apellido: parametros.lastName,
+        pmb: parametros.pmb,
+        email: parametros.email,
+        password: parametros.password,
+      };
+
+      const response = await axios.post(
+        "https://bvmailcenter.com:8000/user/create/",
+        body,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
-      localStorage.setItem("token", response.data.token);
-      //dispatch(fetchLoginSuccess(response.data.role_permissions))
-      callback(response.data.data)
+
+      callback(); // o ajusta según lo que devuelva tu backend
     } catch (error) {
-      console.log(error.message)
-      callbackError(error.message);
-      //dispatch(fetchLoginFailure(error.message));
+      callbackError(error?.response?.data.detail || error.messag);
     }
   };
 };
+
 export const actionEmail = (parametros,callback,callbackError) => {
   return async (dispatch) => {
     try {
@@ -87,7 +96,6 @@ export const actionEmail = (parametros,callback,callbackError) => {
         `http://${window.location.hostname}:5000/api/users/email/`,
         parametros
       );
-      console.log(response.data)
       callback(response.data)
     } catch (error) {
       callbackError(error.message);

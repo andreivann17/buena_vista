@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FETCH_PAYMENT_FAILURE, FETCH_PAYMENT_SUCCESS } from "./types";
+import { FETCH_PAYMENT_FAILURE, FETCH_PAYMENT_SUCCESS,FETCH_PAYMENT_CREATE_SUCCESS,FETCH_PAYMENT_CREATE_FAILURE } from "./types";
 
 // Servicio API si en un futuro quieres usarlo
 const apiService = axios.create({
@@ -31,7 +31,7 @@ export const actionPaymentCreate = (amount, concept, description) => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post('https://bvmailcenter.com:8000/payments/execute', {
+      const response = await axios.post('https://bvmailcenter.com:8000/payments/create', {
   "concept": concept,
   "amount": amount,
   "description": description,
@@ -42,10 +42,12 @@ export const actionPaymentCreate = (amount, concept, description) => {
         }
       });
  
-      //dispatch(fetchPaymentSuccess(response.data)); // o response.data.data según tu backend
+     dispatch(fetchPaymentCreateSuccess(response.data)); // o response.data.data según tu backend
+ 
     } catch (error) {
-   
-      //dispatch(fetchPaymentFailure(error.response?.data?.detail || error.message));
+      
+      dispatch(fetchPaymentCreateFailure(error.response?.data?.detail || error.message));
+     
     }
   };
 };
@@ -64,12 +66,25 @@ export const actionPaymentExecute = (data,callback,callbackError) => {
           Accept: 'application/json',
         }
       });
+      
       callback()
-      //dispatch(fetchPaymentSuccess(response.data)); // o response.data.data según tu backend
     } catch (error) {
+      
       callbackError()
-      //dispatch(fetchPaymentFailure(error.response?.data?.detail || error.message));
     }
+  };
+};
+export const fetchPaymentCreateSuccess = (value) => {
+  return {
+    type: FETCH_PAYMENT_CREATE_SUCCESS,
+    payload: value,
+  };
+};
+
+export const fetchPaymentCreateFailure = (value) => {
+  return {
+    type: FETCH_PAYMENT_CREATE_FAILURE,
+    payload: value,
   };
 };
 

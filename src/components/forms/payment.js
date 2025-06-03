@@ -36,11 +36,11 @@ const dispatch = useDispatch();
   }
   const handleShowPaypal = async () => {
     clearPaypal();
-
     try {
       const values = await form.validateFields();
       const { amount, concept, description } = values;
       const amountNumber = parseFloat(amount);
+      
 
       if (!window.paypal || !paypalRef.current) {
         message.error('PayPal SDK not available.');
@@ -51,6 +51,7 @@ const dispatch = useDispatch();
         message.error('Invalid amount.');
         return;
       }
+      dispatch(actionPaymentCreate(amount, concept, description ))
 
       window.paypal.Buttons({
         style: { layout: 'vertical', color: 'gold', shape: 'rect' },
@@ -64,7 +65,7 @@ const dispatch = useDispatch();
         },
         onApprove: (data) => {
 
-          dispatch(actionPaymentCreate(amount, concept, description ))
+        
           dispatch(actionPaymentExecute(data,callback,callbackError))
        
         },
@@ -73,7 +74,7 @@ const dispatch = useDispatch();
           clearPaypal();
         },
         onError: (err) => {
-          console.error('PayPal error:', err);
+    
           message.error('An error occurred with PayPal.');
           clearPaypal();
         }
@@ -86,7 +87,7 @@ const dispatch = useDispatch();
   };
 
   return (
-    <div style={{ padding: 20, minWidth: 500 }}>
+    <div style={{ padding: 20 }}>
       <Form
         layout="vertical"
         form={form}

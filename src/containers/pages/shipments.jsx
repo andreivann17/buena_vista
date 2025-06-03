@@ -48,12 +48,10 @@ function Home({ shipments,infoUser,infoAdmin }) {
     
     if(isAdmin){
       localStorage.removeItem("tokenadmin");
-    console.log(localStorage.getItem("tokenadmin")); 
       navigate("/");
       return
     }
     localStorage.removeItem("token");
-    console.log(localStorage.getItem("token")); 
     navigate("/");
 
 
@@ -133,7 +131,7 @@ const cardStyle = {
 
   backgroundSize: '100%', // Incrementa este valor para reducir el "zoom" de la imagen
   backgroundPosition: 'center', 
-  backgroundPositionY:"-580px",
+  backgroundPositionY:"-570px",
  
   borderTop:0,
   borderLeft:0,
@@ -141,14 +139,13 @@ const cardStyle = {
   color:"white",
    backgroundImage: `url(${backgroundImage})`,
     color: 'white',
-    height:270,
+    height:250,
 
 };
 
 const contentStyle = {
   position: 'relative',  // Esto asegura que el texto esté por encima del fondo oscurecido
 };
-console.log(token)
   return (
     <>
       {token != null && (
@@ -177,40 +174,54 @@ console.log(token)
                {
                 isAdmin ? (
                   <div className="">
-                  <h5 style={{ fontWeight:600}}>{infoAdmin.nombre + " " + infoAdmin.apellido}</h5>
+                  {
+                    !isMobile &&(
+ <h5 style={{ fontWeight:600}}>{infoAdmin.nombre + " " + infoAdmin.apellido}</h5>
+                    )
+                  }
+                 
                 
                  
                 
                   {/* Hipervínculo con animación underline */}
-                  <div className="mt-2">
-                    <span 
-                      className="logout-link "
-                      style={{color:"cecece"}} 
-                      onClick={log_out_click}
-                    >
+                     <div style={{marginTop: isMobile ? "80px" : "10px"}}>
+                    <Button
+                   type="default"
+                   block
+                   onClick={log_out_click}
+                   >
                    Log out?
-                    </span>
+                  </Button>
                   </div>
                 </div>
                 ):(
                   <div className="">
-                  <h5 style={{fontWeight:600}}>{infoUser.nombre + " " + infoUser.apellido}</h5>
-                
-                  <div className="d-flex justify-content-start">
+                 
+                 {
+                    !isMobile &&(
+<>
+ <h5 style={{fontWeight:600}}>{infoUser.nombre + " " + infoUser.apellido}</h5>
+ <div className="d-flex justify-content-start">
                     <h5 className="marginr-1" style={{}} >PMB: </h5>
                     <h5>{infoUser.pmb}</h5>
                   </div>
-                
-                  {/* Hipervínculo con animación underline */}
-                  <div className="mt-2">
-                    <span 
-                      className="logout-link" 
-                        style={{}} 
-                      onClick={log_out_click}
-                    >
+               
+</>
+                    )
+                  }
+                 
+                   {/* Hipervínculo con animación underline */}
+                  <div style={{marginTop: isMobile ? "80px" : "10px"}}>
+                    <Button
+                   type="default"
+                   block
+                   onClick={log_out_click}
+                   >
                    Log out?
-                    </span>
+                  </Button>
                   </div>
+                
+                 
                 </div>
                 )
                }
@@ -223,7 +234,9 @@ console.log(token)
           <div className="Panel_Contenido marginb-5">
          
           
-              
+                 {
+                false && (
+
             <div className="d-flex justify-content-end marginb-3" >
             <div className="d-flex align-items-center">
             {/* 🔥 Estos se ocultan en móviles */}
@@ -286,7 +299,8 @@ console.log(token)
                   </div>
                 )}
               </div>
-              
+              )
+              }
             <Cardant style={{borderRadius:12,boxShadow: "0px 4px 10px rgba(0,0,0,0.5)",padding:20}}>
             <HistoryTable data={filteredData} isAdmin={isAdmin} />
             </Cardant>

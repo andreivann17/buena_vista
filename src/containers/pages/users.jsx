@@ -4,7 +4,8 @@ import Contenido from "../../components/navigation/contentDashboard.jsx";
 import { connect, useDispatch } from "react-redux";
 import { useNavigate,useLocation } from "react-router-dom";
 import UsersTable from "../../components/tables/usersTable.js";
-import { Button,Card,Input,DatePicker } from 'antd';
+import { Button,Card as Cardant,Input,DatePicker } from 'antd';
+import {Card as CardBootrap} from "react-bootstrap/";
 import RecordFilter from "../../components/offCanvas/recordFilter.js";
 import { actionUsersGet, } from "../../redux/actions/users/users.js";
 import { SearchOutlined,EllipsisOutlined } from '@ant-design/icons';
@@ -15,15 +16,25 @@ const { RangePicker } = DatePicker;
 
 const backgroundStyle = {
   position: "absolute",
-  top: 0,
+  top: -120,
   left: 0,
   height: "100%",
   minHeight:"160px",
   color:"white",
- 
+  backgroundRepeat: "no-repeat",
   width: "100%",
-    background: 'linear-gradient(90deg, rgba(0, 0, 0, 0.6) 70%, rgba(0, 0, 0, 0) 100%)', // Utiliza un gradiente lineal
 
+};
+const cardStyle = {
+  backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0.6) 70%, rgba(0, 0, 0, 0.7) 100%), url(${backgroundImage})`,
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover', // Puedes usar '100%' si prefieres que no haga zoom
+  backgroundPosition: 'center',
+  color: 'white',
+  height: 250,
+  borderTop: 0,
+  borderLeft: 0,
+  borderRight: 0,
 };
 
 function Home({ users,infoAdmin }) {
@@ -66,15 +77,16 @@ useEffect(() => {
   return () => window.removeEventListener('resize', handleResize);
 }, []);
   useEffect(() => {
-       if(isAdmin){
+    ini()
+  }, [infoAdmin]);
+const ini = () =>{
+   if(isAdmin){
         console.log(infoAdmin)
       dispatch(actionUsersGet(infoAdmin["id"]));
     }else{
             dispatch(actionUsersGet(infoAdmin));
     }
-
-  }, [infoAdmin]);
-
+}
 
 const handleFilter = ({ pmb,username }) => {
   console.log(pmb)
@@ -108,7 +120,22 @@ const handleFilter = ({ pmb,username }) => {
   setFilteredData(data);
 };
 
+const contentStyle = {
+  position: 'relative',  // Esto asegura que el texto esté por encima del fondo oscurecido
+};
+ const log_out_click = () =>{
+    
+    if(isAdmin){
+      localStorage.removeItem("tokenadmin");
+  
+      navigate("/");
+      return
+    }
+    localStorage.removeItem("token");
+    navigate("/");
 
+
+  }
   return (
     <>
       {token != null && (
@@ -123,11 +150,52 @@ const handleFilter = ({ pmb,username }) => {
 />
 
           <Header title="Users" icon="fas fa-truck marginr-1" />
-          <Contenido backgroundStyle={backgroundStyle} backgroundImage={backgroundImage} title="Users" icon="fas fa-users marginr-1" />
+             <div className="h-100" >
+              <CardBootrap style={cardStyle} className="">
+              <div style={backgroundStyle}></div>
+              <div className="h-100" style={contentStyle}>
+                <CardBootrap.Body className="h-100 d-flex justify-content-between align-items-center">
+          
+                          <div className="d-flex align-items-center h-100">
+                            <i style={{ fontSize:42}} className={"fas fa-users marginr-1"}></i>
+                            <h1 style={{ fontSize:42,fontWeight:600,marginTop:5}} >{"Users"}</h1>
+                          </div>
+                          
+                         
+                      
+                            <div className="">
+                          {
+                    !isMobile &&(
+ <h5 style={{ fontWeight:600}}>{infoAdmin.nombre + " " + infoAdmin.apellido}</h5>
+                    )
+                  }
+                          
+                            {/* Hipervínculo con animación underline */}
+                     <div style={{marginTop: isMobile ? "80px" : "10px"}}>
+                               <Button
+                                  type="default"
+                                  block
+                                  onClick={log_out_click}
+                                >
+                                 Log out?
+                                </Button>
+                            
+                            </div>
+                          </div>
+                       
+          
+                </CardBootrap.Body>
+                </div>
+              </CardBootrap>
+              
+          </div>
           <div className="Panel_Contenido marginb-5">
          
         
-              
+              {
+                false && (
+
+                
             <div className="d-flex justify-content-end marginb-3">
             <div className="d-flex align-items-center">
             {/* 🔥 Estos se ocultan en móviles */}
@@ -176,10 +244,11 @@ const handleFilter = ({ pmb,username }) => {
                   </div>
                 )}
               </div>
-              
-            <Card style={{borderRadius:12,boxShadow: "0px 4px 10px rgba(0,0,0,0.5)",padding:20}}>
-            <UsersTable data={filteredData} isAdmin={isAdmin} />
-            </Card>
+              )
+              }
+            <Cardant style={{borderRadius:12,boxShadow: "0px 4px 10px rgba(0,0,0,0.5)",padding:20}}>
+            <UsersTable ini={ini} data={filteredData}  />
+            </Cardant>
          
           </div>
         </>

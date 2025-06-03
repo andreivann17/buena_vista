@@ -14,8 +14,6 @@ import Header from "../../components/navigation/header"
 import Footer from "../../components/navigation/footer"
 import ReCAPTCHA from "react-google-recaptcha";
 
-import { GoogleReCaptchaProvider, useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-
 
 function Home({}) {
   const [form] = AntForm.useForm();
@@ -36,31 +34,44 @@ const recaptchaRef = useRef();
 const [captchaValue, setCaptchaValue] = useState(null);
 const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 400);
 
-  const { executeRecaptcha } = useGoogleReCaptcha();
+const handleCaptchaChange = (value) => {
+  setCaptchaValue(value);
+};
 
-  const handleSubmit = async () => {
-    try {
-      await form.validateFields();
-      const values = form.getFieldsValue();
+const handleSubmit = async () => {
+  try {
+    await form.validateFields();
+    const values = form.getFieldsValue();
 
-      if (!values.message || values.message.trim().length <= 10) {
-        notification.error({ message: 'Error', description: 'The message must be longer than 10 characters.' });
-        return;
-      }
-
-      if (!executeRecaptcha) {
-        notification.error({ message: 'Error', description: 'Captcha is not ready.' });
-        return;
-      }
-
-      const token = await executeRecaptcha('contact_form');
-      values.captcha = token;
-
-      dispatch(actionContact(values, callbackContact, callbackContactError));
-    } catch {
-      notification.error({ message: 'Error', description: 'Please complete all fields correctly.' });
+    if (!values.message || values.message.trim().length <= 10) {
+      notification.error({
+        message: 'Error',
+        description: 'The message must be longer than 10 characters.'
+      });
+      return;
     }
-  };
+
+    // ✅ reCAPTCHA v2: validar si el usuario marcó la casilla
+    if (!captchaValue) {
+      notification.error({
+        message: 'Captcha',
+        description: 'Please complete the captcha.'
+      });
+      return;
+    }
+
+    values.captcha = captchaValue;
+
+    // ✅ Envía los datos al backend con captcha
+    dispatch(actionContact(values, callbackContact, callbackContactError));
+  } catch {
+    notification.error({
+      message: 'Error',
+      description: 'Please complete all fields correctly.'
+    });
+  }
+};
+
 useEffect(() => {
   const handleResize = () => {
     setIsSmallScreen(window.innerWidth <= 400);
@@ -449,7 +460,7 @@ Send Us a Message
           {/* Contact Form */}
           <div style={styles.imageContainer}>
             <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>
-                      <GoogleReCaptchaProvider reCaptchaKey="6Le0ZUArAAAAAB3dG_M_Lgc7sk9fwEj94KCDFco6">
+                
               <AntForm   scrollToFirstError form={form} layout="vertical">
                 <AntForm.Item rules={[{ required: true, message: 'Please input your name!' }]} name="name" label="Name">
                   <Input placeholder="Your Name" />
@@ -469,7 +480,12 @@ Send Us a Message
                   <Input.TextArea placeholder="Write your message here..." rows={5} />
                 </AntForm.Item>
        
-
+ <AntForm.Item>
+    <ReCAPTCHA
+      sitekey="6Le0ZUArAAAAAB3dG_M_Lgc7sk9fwEj94KCDFco6"
+      onChange={handleCaptchaChange}
+    />
+  </AntForm.Item>
                 <AntForm.Item>
                   <Button className="custom-button" onClick={handleSubmit} type="primary" htmlType="submit" style={styles.sendButton}>
                     SEND
@@ -477,7 +493,7 @@ Send Us a Message
                 </AntForm.Item>
               
               </AntForm>
-                </GoogleReCaptchaProvider>
+           
             </div>
           </div>
         </div>

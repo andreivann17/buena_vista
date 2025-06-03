@@ -11,7 +11,7 @@ import logo from "../../assets/img/logo.png";
 import logo2 from "../../assets/img/login.jpg";
 import axios from "axios";
 import ModalOlvidar from "../../components/modals/modalOlvidarPassword";
-
+import {  actionSignUp} from "../../redux/actions/login/login";
 function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -45,24 +45,19 @@ function Home() {
       return false;
     }
   };
+ const callback = () =>{
+    navigate("/");
+ }
+ const callbackError = (msg) =>{
+    openNotification(msg);
+ }
+const acceptButtonHandler = async () => {
+  const valid = await checkFields();
+  if (!valid) return;
 
-  const acceptButtonHandler = async () => {
-    const valid = await checkFields();
-    if (!valid) return;
-
-    axios
-      .post(`http://${window.location.hostname}:5000/api/users/signup`, form.getFieldsValue())
-      .then(res => {
-        if (res.data.token) {
-          localStorage.setItem("token", res.data.token);
-          navigate("/");
-        }
-      })
-      .catch(() => {
-        setMsg("Error en la autenticación");
-        setShowToast(true);
-      });
-  };
+  const values = form.getFieldsValue(); // <-- obtiene los valores del formulario
+  dispatch(actionSignUp(values, callback, callbackError)); // <-- los pasa como JSON
+};
 
   const styles = {
     wrapper: {
@@ -160,7 +155,7 @@ function Home() {
                 </Form.Item>
 
                 <Form.Item
-                  name="obm"
+                  name="pmb"
                   label="PMB"
                   rules={[{ required: true, message: 'Please input your PMB!' }]}
                 >

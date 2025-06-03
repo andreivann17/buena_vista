@@ -1,0 +1,49 @@
+\begin{table*}[t]
+\centering
+\caption{Ophthalmic datasets used in the EyeFound study across different imaging modalities and tasks.}
+\label{tab:eyefound_datasets}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}
+p{0.18\textwidth}  % Dataset
+p{0.20\textwidth}  % Source
+p{0.15\textwidth}  % Modality
+p{0.15\textwidth}  % Size
+p{0.12\textwidth}  % Reports
+p{0.10\textwidth}  % Access
+}
+\toprule
+\textbf{Dataset} & \textbf{Source} & \textbf{Modality} & \textbf{Size} & \textbf{Reports} & \textbf{Access} \\
+\midrule
+
+EyeFound Pretraining Set & 227 hospitals in China & CFP, FFA, ICGA, OCT, Ultrasound, etc. (11 total) & 2,777,593 images & No & Not available \\
+
+APTOS 2019 & Kaggle (India) & CFP & Not specified & No & Public \\
+
+IDRID & Indian Retinal Image Dataset & CFP & Not specified & No & Public \\
+
+MESSIDOR-2 & France & CFP & Not specified & No & Public \\
+
+PAPILA & Spain & CFP & Not specified & No & Public \\
+
+Glaucoma Fundus & South Korea & CFP & Not specified & No & Public \\
+
+JSIEC & China & CFP & 1,000 images & No & Public \\
+
+Retina Dataset & Not specified & CFP & Not specified & No & Unknown \\
+
+MuReD & Multi-source & CFP & 20 disease labels & No & Public \\
+
+OCTID & India & OCT & 572 scans & No & Public \\
+
+OCTDL & Not specified & OCT & Not specified & No & Public \\
+
+AngioReport (APTOS 2023) & Thailand & FFA, ICGA & >50,000 images & Yes & Private/Test subset used \\
+
+Retina Image Bank & American Society of Retina Specialists & Multimodal (14 total) & >25,000 images & Yes & Public \\
+
+UK Biobank & UK NHS / Biobank Project & CFP & 171,500 images (82,885 patients) & Yes (diagnoses) & Public (application required) \\
+
+OphthalVQA & China & SLO, CFP, OCT, FFA, Ultrasound, Slit-lamp & 60 images, 600 QA pairs & Yes & Private \\
+
+\bottomrule
+\end{tabular*}
+\end{table*}

@@ -13,10 +13,10 @@ const apiService = axios.create({
 export const actionUsersGet = (id) => {
   return async (dispatch) => {
     try {
-      console.log(id)
+     
       // Si quieres en un futuro hacer petición real, aquí iría
       const token = localStorage.getItem("tokenadmin");
-       const response = await axios.get(`https://bvmailcenter.com:8000/admin/${id}/users`, {"admin_id":id},{
+       const response = await axios.get(`https://bvmailcenter.com:8000/admin/${id}/users?page=1&size=50`,{
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
@@ -29,7 +29,75 @@ export const actionUsersGet = (id) => {
     }
   };
 };
+export const actionUsersDelete = (id,callback,callbackError) => {
+  return async (dispatch) => {
+    try {
+   
+      // Si quieres en un futuro hacer petición real, aquí iría
+      const token = localStorage.getItem("tokenadmin");
+       const response = await axios.delete(`https://bvmailcenter.com:8000/admin/${id}/`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        }
+      });
 
+      callback() // o response.data.data según tu backend
+    } catch (error) {
+      callbackError(error?.response?.data.detail || error.messag)
+    }
+  };
+};
+export const actionUsersAdminUpdate = (data,id,callback,callbackError) => {
+  return async (dispatch) => {
+    try {
+     const body = {
+
+        nombre: data.firstName,
+        apellido: data.lastName,
+        email: data.email,
+        password: data.password,
+      };
+      // Si quieres en un futuro hacer petición real, aquí iría
+      const token = localStorage.getItem("tokenadmin");
+       const response = await axios.put(`https://bvmailcenter.com:8000/admin/${id}/`, body,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        }
+      });
+
+      callback() // o response.data.data según tu backend
+    } catch (error) {
+      callbackError(error?.response?.data.detail || error.messag)
+    }
+  };
+};
+export const actionUsersUpdate = (data,id,callback,callbackError) => {
+  return async (dispatch) => {
+    try {
+     const body = {
+
+        nombre: data.firstName,
+        apellido: data.lastName,
+        email: data.email,
+        password: data.password,
+      };
+      // Si quieres en un futuro hacer petición real, aquí iría
+      const token = localStorage.getItem("token");
+       const response = await axios.put(`https://bvmailcenter.com:8000/user/${id}/`,body,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        }
+      });
+
+       callback() // o response.data.data según tu backend
+    } catch (error) {
+      callbackError(error?.response?.data.detail || error.messag)
+    }
+  };
+};
 export const fetchUsersSuccess = (value) => {
   return {
     type: FETCH_USERS_SUCCESS,

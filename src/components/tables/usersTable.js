@@ -1,32 +1,49 @@
 import React, { useState } from 'react';
-import { Table, Dropdown, Menu, Button, Modal } from 'antd';
+import { Table, Dropdown, Menu, Button, Modal, notification } from 'antd';
 import { EllipsisOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { actionUsersDelete } from "../../redux/actions/users/users.js";
+import { useDispatch } from 'react-redux';
 
 const { Column } = Table;
 const { confirm } = Modal;
 
-function HistoryTable({ data, isAdmin }) {
+function HistoryTable({ data, ini }) {
   const [hoveredRowKey, setHoveredRowKey] = useState(null);
+  const dispatch = useDispatch();
 
-  const onConfirmDelete = (pmb) => {
-    // 🔥 Aquí ejecutas la lógica real de eliminación
-    console.log("✅ Usuario confirmado para eliminar:", pmb);
+  const onConfirmDelete = (id) => {
+    dispatch(actionUsersDelete(id, callback, callbackError));
   };
 
-  const showDeleteConfirm = (pmb) => {
+  const openNotification = (msg, type = "error") => {
+    notification[type]({
+      message: type === "error" ? "Error" : "Success",
+      description: msg,
+    });
+  };
+
+  const callback = () => {
+    ini();
+    openNotification("User deleted successfully.", "success");
+  };
+
+  const callbackError = (msg) => {
+    openNotification(msg);
+  };
+
+  const showDeleteConfirm = (pmb, id) => {
     confirm({
-      title: '¿Estás seguro de que deseas eliminar este usuario?',
+      title: 'Are you sure you want to delete this user?',
       icon: <ExclamationCircleOutlined />,
-      content: `Esta acción no se puede deshacer. PMB: ${pmb}`,
-      okText: 'Sí, eliminar',
+      content: `This action cannot be undone. PMB: ${pmb}`,
+      okText: 'Yes, delete',
       okType: 'danger',
-      cancelText: 'Cancelar',
+      cancelText: 'Cancel',
       onOk() {
-        onConfirmDelete(pmb);
+        onConfirmDelete(id);
       },
       onCancel() {
-        // No hacer nada si se cancela
-        console.log("❌ Eliminación cancelada");
+        console.log("❌ Deletion canceled");
       },
     });
   };
@@ -34,8 +51,8 @@ function HistoryTable({ data, isAdmin }) {
   const renderActions = (text, record) => {
     const menu = (
       <Menu>
-        <Menu.Item key="delete" onClick={() => showDeleteConfirm(record.pmb)}>
-          Eliminar
+        <Menu.Item key="delete" onClick={() => showDeleteConfirm(record.pmb, record.id)}>
+          Delete
         </Menu.Item>
       </Menu>
     );
@@ -48,28 +65,21 @@ function HistoryTable({ data, isAdmin }) {
   };
 
   return (
-    <div
-      style={{
-        width: '100%',
-        overflowX: 'auto',
-        maxWidth: '100%',
-      }}
-    >
+    <div style={{ width: '100%', overflowX: 'auto', maxWidth: '100%' }}>
       <Table
-  dataSource={Array.isArray(data) ? data : []}
-  rowKey="pmb"
-  bordered
-  style={{ minWidth: 600, marginBottom: '30px' }}
-  className="custom-bordered-table"
-  pagination={{ style: { marginTop: '30px' } }}
-  onRow={(record) => ({
-    onMouseEnter: () => setHoveredRowKey(record.pmb),
-    onMouseLeave: () => setHoveredRowKey(null),
-  })}
->
-
-        <Column title="Name" dataIndex="name" key="name" />
-        <Column title="UserName" dataIndex="username" key="username" />
+        dataSource={Array.isArray(data) ? data : []}
+        rowKey="pmb"
+        bordered
+        style={{ minWidth: 600, marginBottom: '30px' }}
+        className="custom-bordered-table"
+        pagination={{ style: { marginTop: '30px' } }}
+        onRow={(record) => ({
+          onMouseEnter: () => setHoveredRowKey(record.pmb),
+          onMouseLeave: () => setHoveredRowKey(null),
+        })}
+      >
+        <Column title="First Name" dataIndex="nombre" key="nombre" />
+        <Column title="Last Name" dataIndex="apellido" key="apellido" />
         <Column title="Email" dataIndex="email" key="email" />
         <Column title="PMB" dataIndex="pmb" key="pmb" />
         <Column

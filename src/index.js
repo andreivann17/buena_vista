@@ -14,8 +14,8 @@ import Login from "./containers/pages/login";
 import SignUp from "./containers/pages/signup";
 import Shipments from "./containers/pages/shipments";
 import Users from "./containers/pages/users";
-
 import Payment from "./containers/pages/payment";
+import Account from "./containers/pages/account";
 import Pricing from "./containers/pages/pricing";
 import Location from "./containers/pages/location";
 import Contact from "./containers/pages/contact";
@@ -42,6 +42,30 @@ const routes = [
     element: <Pricing />,
     nodeRef: createRef(),
     className: "Pricing",
+  },
+    {
+    path: "/account",
+    value: "account-0",
+    name: "Account",
+    element: <Account />,
+    nodeRef: createRef(),
+    className: "Account",
+  },    
+  {
+    path: "/account",
+    value: "account-0",
+    name: "Account",
+    element: <Account />,
+    nodeRef: createRef(),
+    className: "Account",
+  }, 
+  {
+    path: "/admin/account",
+    value: "account-0",
+    name: "Account",
+    element: <Account />,
+    nodeRef: createRef(),
+    className: "Account",
   },
   {
     path: "/contact",
