@@ -482,7 +482,7 @@ Send Us a Message
        
  <AntForm.Item>
     <ReCAPTCHA
-      sitekey="6Le0ZUArAAAAAB3dG_M_Lgc7sk9fwEj94KCDFco6"
+      sitekey="6Lf6AVUrAAAAAM4zACj-2ZLE17l-JjR5PnOr0p23"
       onChange={handleCaptchaChange}
     />
   </AntForm.Item>
