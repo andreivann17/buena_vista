@@ -35,6 +35,7 @@ const [captchaValue, setCaptchaValue] = useState(null);
 const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 400);
 
 const handleCaptchaChange = (value) => {
+  console.log(value)
   setCaptchaValue(value);
 };
 
@@ -433,7 +434,7 @@ const checkFields = async () => {
     <div style={styles.textContainer}>
     
       <div style={{fontSize:"22px"}}>
-        <p><strong>Address:</strong> 689 N Main St Suite 2San Luis, Arizona 85336 United States</p>
+        <p><strong>Address:</strong> 689 N Main St Suite 2, San Luis, Arizona 85336 United States</p>
         <p><strong>Phone:</strong> +1 928 550 5039</p>
         <p><strong>Email:</strong> buenavistamailc@gmail.com</p>
         <p>Monday to Friday</p>
