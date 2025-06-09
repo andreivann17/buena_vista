@@ -26,6 +26,7 @@ function Home({}) {
   const [showtoast, setShowToast] = useState(false);
   const passwordInput = useRef(null);
   const servicesRef = useRef(null);
+  const visitUsRef = useRef(null);
   const dispatch = useDispatch();
   const homeRef = useRef(null);
 const officeRef = useRef(null);
@@ -195,7 +196,10 @@ const checkFields = async () => {
     console.log(values);
     dispatch(actionContact(values, callbackContact, callbackContactError));
   };
-  
+  const scrollToVisitUs = () => {
+    const y = visitUsRef.current.getBoundingClientRect().top + window.scrollY - 40;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  };
   const scrollToServices = () => {
     const y = servicesRef.current.getBoundingClientRect().top + window.scrollY - 40;
     window.scrollTo({ top: y, behavior: 'smooth' });
@@ -227,6 +231,7 @@ const checkFields = async () => {
   onScrollLocation={scrollToOffice}
   onScrollContact={scrollToContact}
   onScrollService={scrollToServices}
+  onScrollVisitUs={scrollToVisitUs}
 />
 
 {isSmallScreen ? (
@@ -436,7 +441,7 @@ const checkFields = async () => {
       <div style={{fontSize:"22px"}}>
         <p><strong>Address:</strong> 689 N Main St Suite 2, San Luis, Arizona 85336 United States</p>
         <p><strong>Phone:</strong> +1 928 550 5039</p>
-        <p><strong>Email:</strong> buenavistamailc@gmail.com</p>
+        <p><strong>Email:</strong> admin@bvmailcenter.com</p>
         <p>Monday to Friday</p>
         <p><strong>Hours:</strong> 9:00 AM - 5:00 PM</p>
       </div>
@@ -500,7 +505,7 @@ Send Us a Message
         </div>
       </section>
     {/* Sección del mapa (Contact) */}
-<section ref={contactRef} style={styles.mapSection}>
+<section ref={visitUsRef} style={styles.mapSection}>
 <h2 style={styles.sectionTitle}>
    Visit Us
     <div style={styles.underline}></div>

@@ -35,56 +35,30 @@ const dispatch = useDispatch();
  message.error('An error occurred with PayPal.');
   }
   const handleShowPaypal = async () => {
-    clearPaypal();
-    try {
-      const values = await form.validateFields();
-      const { amount, concept, description } = values;
-      const amountNumber = parseFloat(amount);
-      
+  try {
+    const values = await form.validateFields();
+    const { amount, concept, description } = values;
+    const amountNumber = parseFloat(amount);
 
-      if (!window.paypal || !paypalRef.current) {
-        message.error('PayPal SDK not available.');
-        return;
-      }
-
-      if (!amount || isNaN(amountNumber) || amountNumber <= 0) {
-        message.error('Invalid amount.');
-        return;
-      }
-      dispatch(actionPaymentCreate(amount, concept, description ))
-
-      window.paypal.Buttons({
-        style: { layout: 'vertical', color: 'gold', shape: 'rect' },
-        createOrder: (_, actions) => {
-          return actions.order.create({
-            purchase_units: [{
-              amount: { value: amountNumber.toFixed(2), currency_code: 'USD' },
-              description
-            }]
-          });
-        },
-        onApprove: (data) => {
-
-        
-          dispatch(actionPaymentExecute(data,callback,callbackError))
-       
-        },
-        onCancel: () => {
-        
-          clearPaypal();
-        },
-        onError: (err) => {
-    
-          message.error('An error occurred with PayPal.');
-          clearPaypal();
-        }
-      }).render(paypalRef.current);
-
-      setPaypalReady(true);
-    } catch {
-      message.error('Please complete all required fields.');
+    if (!amount || isNaN(amountNumber) || amountNumber <= 0) {
+      message.error('Invalid amount.');
+      return;
     }
-  };
+
+    // Crear el pago en el backend
+    const response =  dispatch(actionPaymentCreate(amount, concept, description));
+    
+    if (response && response.data && response.data.approval_url) {
+      // Redirigir al sitio de PayPal
+      window.location.href = response.data.approval_url;
+    } else {
+      message.error('No approval URL returned from backend.');
+    }
+  } catch (error) {
+    message.error('Please complete all required fields or check the backend.');
+  }
+};
+
 
   return (
     <div style={{ padding: 20 }}>

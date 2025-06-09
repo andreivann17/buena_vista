@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Table, Dropdown, Menu, Button, Modal, notification } from 'antd';
 import { EllipsisOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { actionUsersDelete } from "../../redux/actions/users/users.js";
+import { actionUsersDelete,actionUsersActivate } from "../../redux/actions/users/users.js";
 import { useDispatch } from 'react-redux';
 
 const { Column } = Table;
@@ -30,6 +30,14 @@ function HistoryTable({ data, ini }) {
   const callbackError = (msg) => {
     openNotification(msg);
   };
+ const callbackActivate = () => {
+    ini();
+openNotification("User activated successfully.", "success");
+  };
+
+  const callbackActivateError = (msg) => {
+    openNotification(msg);
+  };
 
   const showDeleteConfirm = (pmb, id) => {
     confirm({
@@ -54,12 +62,16 @@ function HistoryTable({ data, ini }) {
         <Menu.Item key="delete" onClick={() => showDeleteConfirm(record.pmb, record.id)}>
           Delete
         </Menu.Item>
+         <Menu.Item key="activate" onClick={() => dispatch(actionUsersActivate(record.id,callbackActivate,callbackActivateError))}>
+          Activate
+        </Menu.Item>
       </Menu>
     );
 
     return (
       <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
-        <Button type="text" icon={<EllipsisOutlined />} />
+       <Button className="action-dots" type="text" icon={<EllipsisOutlined />} />
+
       </Dropdown>
     );
   };
@@ -74,9 +86,11 @@ function HistoryTable({ data, ini }) {
         className="custom-bordered-table"
         pagination={{ style: { marginTop: '30px' } }}
         onRow={(record) => ({
-          onMouseEnter: () => setHoveredRowKey(record.pmb),
-          onMouseLeave: () => setHoveredRowKey(null),
-        })}
+  onMouseEnter: () => setHoveredRowKey(record.pmb),
+  onMouseLeave: () => setHoveredRowKey(null),
+  className: record.active ? 'row-colored-active' : 'row-colored-inactive'
+})}
+
       >
         <Column title="First Name" dataIndex="nombre" key="nombre" />
         <Column title="Last Name" dataIndex="apellido" key="apellido" />

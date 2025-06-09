@@ -86,7 +86,7 @@ const styles = {
   },
   socialIcons: {
     display: 'flex',
-    justifyContent: 'start',
+    justifyContent: 'center',
     gap: '15px',
     marginTop: '10px'
   },

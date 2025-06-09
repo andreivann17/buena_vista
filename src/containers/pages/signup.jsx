@@ -213,7 +213,7 @@ const acceptButtonHandler = async () => {
     block
     onClick={acceptButtonHandler}
   >
-    Create Account
+    Submit
   </Button>
 </Form.Item>
 

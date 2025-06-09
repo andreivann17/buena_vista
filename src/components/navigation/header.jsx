@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/img/logo.png"
 import "../../assets/css/header_home.css"
-function Header({ onScrollHome, onScrollLocation, onScrollContact,onScrollService }) {
+function Header({ onScrollHome, onScrollLocation, onScrollContact,onScrollService,onScrollVisitUs }) {
   return (
     <header style={styles.header}>
       <div className="d-flex align-items-center">
@@ -13,6 +13,7 @@ function Header({ onScrollHome, onScrollLocation, onScrollContact,onScrollServic
       <span className="link-pointer header-link" onClick={onScrollService}>Services</span>
 <span className="link-pointer header-link" onClick={onScrollLocation}>Location</span>
 <span className="link-pointer header-link" onClick={onScrollContact}>Contact</span>
+<span className="link-pointer header-link" onClick={onScrollVisitUs}>Visit Us</span>
       </nav>
     </header>
   );
