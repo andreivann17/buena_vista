@@ -34,6 +34,18 @@ const dispatch = useDispatch();
   const callbackError = () =>{
  message.error('An error occurred with PayPal.');
   }
+   const callbackCreate = (response) =>{
+    console.log(response)
+  if (response.approval_url) {
+      // Redirigir al sitio de PayPal
+      window.location.href = response.approval_url;
+    } else {
+      message.error('No approval URL returned from backend.');
+    }
+  }
+  const callbackErrorCreate = () =>{
+ message.error('An error occurred with PayPal.');
+  }
   const handleShowPaypal = async () => {
   try {
     const values = await form.validateFields();
@@ -46,14 +58,8 @@ const dispatch = useDispatch();
     }
 
     // Crear el pago en el backend
-    const response =  dispatch(actionPaymentCreate(amount, concept, description));
-    
-    if (response && response.data && response.data.approval_url) {
-      // Redirigir al sitio de PayPal
-      window.location.href = response.data.approval_url;
-    } else {
-      message.error('No approval URL returned from backend.');
-    }
+    dispatch(actionPaymentCreate(amount, concept, description,callbackCreate,callbackErrorCreate));
+
   } catch (error) {
     message.error('Please complete all required fields or check the backend.');
   }

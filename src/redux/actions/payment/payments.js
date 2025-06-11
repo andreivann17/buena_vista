@@ -27,7 +27,7 @@ export const actionPaymentGet = () => {
   };
 };
 
-export const actionPaymentCreate = (amount, concept, description) => {
+export const actionPaymentCreate = (amount, concept, description,callbackCreate,callbackErrorCreate) => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
@@ -43,11 +43,11 @@ export const actionPaymentCreate = (amount, concept, description) => {
       });
  
      dispatch(fetchPaymentCreateSuccess(response.data)); // o response.data.data según tu backend
- 
+ callbackCreate(response.data)
     } catch (error) {
       
       dispatch(fetchPaymentCreateFailure(error.response?.data?.detail || error.message));
-     
+     callbackErrorCreate()
     }
   };
 };
