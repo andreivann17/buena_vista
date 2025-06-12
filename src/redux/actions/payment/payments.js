@@ -52,28 +52,33 @@ export const actionPaymentCreate = (amount, concept, description,callbackCreate,
   };
 };
 
-
-export const actionPaymentExecute = (data,callback,callbackError) => {
+export const actionPaymentExecute = (paymentId, payerId, callback, callbackError) => {
   return async (dispatch) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post('https://bvmailcenter.com:8000/payments/execute', JSON.stringify({
-        payment_id: data.orderID,
-        payer_id: data.payerID
-      }),{
+      console.log({
+        payment_id: paymentId,
+        payer_id: payerId
+      })
+      const response = await axios.post('https://bvmailcenter.com:8000/payments/execute', {
+        payment_id: paymentId,
+        payer_id: payerId
+      }, {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
+          'Content-Type': 'application/json'  // también puedes agregar esto para mayor claridad
         }
       });
-      
-      callback()
+
+      callback();
     } catch (error) {
-      
-      callbackError()
+  
+      callbackError(error.response.data.detail);
     }
   };
 };
+
 export const fetchPaymentCreateSuccess = (value) => {
   return {
     type: FETCH_PAYMENT_CREATE_SUCCESS,

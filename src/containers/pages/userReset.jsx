@@ -30,15 +30,7 @@ function Home() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const openNotification = (msg) => {
-    notification.error({
-      message: "Error",
-      description: msg,
-    });
-  };
-
-  const checkFields = async () => {
+const checkFields = async () => {
     try {
       await form.validateFields();
       return true;
@@ -47,6 +39,14 @@ function Home() {
       return false;
     }
   };
+  const openNotification = (msg) => {
+    notification.error({
+      message: "Error",
+      description: msg,
+    });
+  };
+
+  
   const openNotificationSuccess = () => {
   notification.success({
     message: "Password Updated",

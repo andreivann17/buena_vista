@@ -35,7 +35,7 @@ export const actionUsersDelete = (id,callback,callbackError) => {
    
       // Si quieres en un futuro hacer petición real, aquí iría
       const token = localStorage.getItem("tokenadmin");
-       const response = await axios.delete(`https://bvmailcenter.com:8000/admin/users/${id}/`,{
+       const response = await axios.delete(`https://bvmailcenter.com:8000/admin/desactivar_user/${id}/`,{
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',
@@ -53,7 +53,7 @@ export const actionUsersActivate = (id,callback,callbackError) => {
     try {
       // Si quieres en un futuro hacer petición real, aquí iría
       const token = localStorage.getItem("tokenadmin");
-       const response = await axios.patch(`https://bvmailcenter.com:8000/admin/users/${id}/`,{
+       const response = await axios.delete(`https://bvmailcenter.com:8000/admin/activar_user/${id}/`,{
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/json',

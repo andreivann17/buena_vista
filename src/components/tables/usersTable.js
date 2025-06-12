@@ -56,15 +56,17 @@ openNotification("User activated successfully.", "success");
     });
   };
 
-  const renderActions = (text, record) => {
+  const renderActions = (text, record,status) => {
     const menu = (
       <Menu>
-        <Menu.Item key="delete" onClick={() => showDeleteConfirm(record.pmb, record.id)}>
-          Delete
-        </Menu.Item>
-         <Menu.Item key="activate" onClick={() => dispatch(actionUsersActivate(record.id,callbackActivate,callbackActivateError))}>
+        {status ?
+      ( <Menu.Item key="delete" onClick={() => showDeleteConfirm(record.pmb, record.id)}>
+          Desactivate
+        </Menu.Item>):( <Menu.Item key="activate" onClick={() => dispatch(actionUsersActivate(record.id,callbackActivate,callbackActivateError))}>
           Activate
-        </Menu.Item>
+        </Menu.Item>)  
+      }
+       
       </Menu>
     );
 
@@ -100,7 +102,7 @@ openNotification("User activated successfully.", "success");
           title="Actions"
           key="actions"
           render={(text, record) =>
-            hoveredRowKey === record.pmb ? renderActions(text, record) : null
+            hoveredRowKey === record.pmb ? renderActions(text, record,record.active) : null
           }
         />
       </Table>

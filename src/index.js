@@ -15,6 +15,7 @@ import SignUp from "./containers/pages/signup";
 import Shipments from "./containers/pages/shipments";
 import Users from "./containers/pages/users";
 import Payment from "./containers/pages/payment";
+import PaymentSuccess from "./containers/pages/paymentSuccess";
 import Account from "./containers/pages/account";
 import UserReset from "./containers/pages/userReset";
 import Pricing from "./containers/pages/pricing";
@@ -117,6 +118,14 @@ const routes = [
     element: <Payment />,
     nodeRef: createRef(),
     className: "Payment",
+  },
+    {
+    path: "/payment/success",
+    value: "paymentsuccess-0",
+    name: "PaymentSuccess",
+    element: <PaymentSuccess />,
+    nodeRef: createRef(),
+    className: "PaymentSuccess",
   },
   {
     path: "/admin/login",
