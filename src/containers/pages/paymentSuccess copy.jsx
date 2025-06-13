@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button,Card as Cardant,Input,Spin,notification } from 'antd';
 import {Card as CardBootrap} from "react-bootstrap/";
 import Header from "../../components/navigation/headerDashboard.jsx";
 import FormPayment from "../../components/forms/payment.js";
 import { connect, useDispatch } from 'react-redux';
-import { actionPaymentExecute,actionPaymentStatus } from "../../redux/actions/payment/payments.js";
+import { actionPaymentExecute } from "../../redux/actions/payment/payments.js";
 import { useNavigate,useLocation,useSearchParams } from "react-router-dom";
 
 const backgroundStyle = {
@@ -34,16 +34,11 @@ const contentStyle = {
 const PaymentForm = (props) => {
   const [data, setData] = useState({});
     const [isMobile, setIsMobile] = useState(false); // 🔥 Estado para detectar si es móvil
-   const [pollingCount, setPollingCount] = useState(0);
-  const [pollingInterval, setPollingInterval] = useState(null);
-  const pollingCountRef = useRef(0); // 👈
-
+  
   const navigate = useNavigate();
   const location = useLocation()
   const dispatch = useDispatch();
   const isAdmin = location.pathname.includes("/admin");
-    const [searchParams] = useSearchParams();
-    const [paymentStatus, setPaymentStatus] = useState("");
   const [token, setToken] = useState(localStorage.getItem(isAdmin? "tokenadmin":"token"));
   const log_out_click = () =>{
     
@@ -58,29 +53,6 @@ const PaymentForm = (props) => {
 
 
   }
-const pollPaymentStatus = (paymentId) => {
-  const interval = setInterval(() => {
-    dispatch(actionPaymentStatus(paymentId, (err, data) => {
-      if (err) {
-        console.error('Polling error:', err);
-        clearInterval(interval);
-        return;
-      }
-
-      setPaymentStatus(data.status);
-      setPollingCount(prev => {
-  pollingCountRef.current += 1;
-  if (data.status === 'approved' || pollingCountRef.current >= 6) {
-    clearInterval(interval);
-  }
-  return pollingCountRef.current; // ✅ esta línea es la correcta
-});
-
-    }));
-  }, 3000);
-
-  setPollingInterval(interval);
-};
 
 useEffect(() => {
   const handleResize = () => {
@@ -110,14 +82,11 @@ useEffect(() => {
     });
   };
   
-
   const callback = () => {
-  setPaymentStatus("processing");
-  const paymentId = searchParams.get("paymentId");
-  if (paymentId) {
-    pollPaymentStatus(paymentId); // iniciar el polling
-  }
-};
+    
+    setPaymentStatus("approved");
+  };
+  
    const callbackError = (msg) =>{
     console.log(msg)
     if(msg =="404: Payment not found or doesn't belong to this user"){
@@ -129,21 +98,18 @@ setPaymentStatus("error");
     
     
    }
-
+  const [searchParams] = useSearchParams();
+    const [paymentStatus, setPaymentStatus] = useState("");
     
   
     useEffect(() => {
-  const paymentId = searchParams.get('paymentId');
-  const payerId = searchParams.get('PayerID');
-
-  if (paymentId && payerId) {
-    dispatch(actionPaymentExecute(paymentId, payerId, callback, callbackError));
-  }
-
-  return () => {
-    if (pollingInterval) clearInterval(pollingInterval);
-  };
-}, [searchParams]);
+      const paymentId = searchParams.get('paymentId'); // PayPal usa paymentId en la URL
+      const payerId = searchParams.get('PayerID');    // Nota: PayPal usa "PayerID" con mayúsculas
+      
+      if (paymentId && payerId) {
+      dispatch(actionPaymentExecute(paymentId,payerId,callback,callbackError))
+      }
+    }, [searchParams]);
 
   return (
     <>
@@ -194,7 +160,7 @@ setPaymentStatus("error");
                 </div>
                     </CardBootrap>
                     </div>
- <div className="d-flex justify-content-center mt-5">
+       <div className="d-flex justify-content-center mt-5">
   <Cardant
     style={{
       width: 420,
@@ -208,38 +174,34 @@ setPaymentStatus("error");
     <h2 style={{ marginBottom: 16 }}>Payment Processing</h2>
 
     {paymentStatus === 'approved' ? (
-      <>
-        <p style={{ fontSize: 16 }}>
-          <strong>Status:</strong> {paymentStatus}
-        </p>
-        <p style={{ color: 'green', fontWeight: 'bold' }}>
-          ✅ Your payment was successful!
-        </p>
-      </>
-    ) : paymentStatus === 'processing' ? (
-      <div>
-        <p style={{ fontSize: 16 }}>
-          Your payment is being processed. We'll notify you when completed.
-        </p>
-        <Spin size="large" style={{ marginTop: 16 }} />
-      </div>
-    ) : paymentStatus === '404' ? (
-      <div>
-        <p style={{ fontSize: 16, color: '#d32029', fontWeight: 'bold' }}>
-          ❌ This payment link is no longer valid.
-        </p>
-        <p style={{ color: '#888' }}>
-          It may have already been used or expired. Please contact support or try again from your account dashboard.
-        </p>
-      </div>
-    ) : (
-      <p style={{ color: 'red', fontWeight: 'bold' }}>
-        ❌ An unexpected error occurred. Please try again later.
-      </p>
-    )}
+  <>
+    <p style={{ fontSize: 16 }}>
+      <strong>Status:</strong> {paymentStatus}
+    </p>
+    <p style={{ color: 'green', fontWeight: 'bold' }}>
+      ✅ Your payment was successful!
+    </p>
+  </>
+) : paymentStatus === '404' ? (
+  <div>
+    <p style={{ fontSize: 16, color: '#d32029', fontWeight: 'bold' }}>
+      ❌ This payment link is no longer valid.
+    </p>
+    <p style={{ color: '#888' }}>
+      It may have already been used or expired. Please contact support or try again from your account dashboard.
+    </p>
+  </div>
+) : paymentStatus === 'error' ? (
+  <p style={{ color: 'red', fontWeight: 'bold' }}>❌ An unexpected error occurred. Please try again later.</p>
+) : (
+  <div>
+    <p style={{ fontSize: 16 }}>Please wait while we confirm your payment...</p>
+    <Spin size="large" style={{ marginTop: 16 }} />
+  </div>
+)}
+
   </Cardant>
 </div>
-
 
         </>
       )}

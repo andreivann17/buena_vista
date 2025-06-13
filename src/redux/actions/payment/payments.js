@@ -60,6 +60,11 @@ export const actionPaymentExecute = (paymentId, payerId, callback, callbackError
         payment_id: paymentId,
         payer_id: payerId
       })
+      if (!paymentId || !payerId) {
+        callbackError("Missing payment ID or payer ID");
+        return;
+      }
+
       const response = await axios.post('https://bvmailcenter.com:8000/payments/execute', {
         payment_id: paymentId,
         payer_id: payerId
@@ -80,6 +85,27 @@ export const actionPaymentExecute = (paymentId, payerId, callback, callbackError
     }
   };
 };
+export const actionPaymentStatus = (paymentId, callback) => {
+  return async (dispatch) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`https://bvmailcenter.com:8000/payments/status/${paymentId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // Aquí devuelves la data al componente
+      if (callback) callback(null, response.data);
+    } catch (error) {
+      console.error(error);
+      if (callback) callback(error, null);
+    }
+  };
+};
+
 
 export const fetchPaymentCreateSuccess = (value) => {
   return {
