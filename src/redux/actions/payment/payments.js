@@ -70,9 +70,11 @@ export const actionPaymentExecute = (paymentId, payerId, callback, callbackError
           'Content-Type': 'application/json'  // también puedes agregar esto para mayor claridad
         }
       });
+      console.log(response)
 
       callback();
     } catch (error) {
+      console.log(error)
   
       callbackError(error.response.data.detail);
     }
