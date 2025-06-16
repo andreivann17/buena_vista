@@ -71,7 +71,13 @@ const pollPaymentStatus = (paymentId) => {
       setPollingCount(prev => {
   pollingCountRef.current += 1;
   if (data.status === 'approved' || pollingCountRef.current >= 6) {
-    clearInterval(interval);
+    if (data.status === 'approved') {
+  clearInterval(interval);
+} else if (pollingCountRef.current >= 6) {
+  clearInterval(interval);
+  setPaymentStatus("timeout");
+}
+
   }
   return pollingCountRef.current; // ✅ esta línea es la correcta
 });
@@ -110,14 +116,19 @@ useEffect(() => {
     });
   };
   
+const callback = (responseData) => {
+  if (responseData?.status === 'requires_approval' && responseData.approval_url) {
+    window.location.href = responseData.approval_url;
+    return;
+  }
 
-  const callback = () => {
   setPaymentStatus("processing");
   const paymentId = searchParams.get("paymentId");
   if (paymentId) {
-    pollPaymentStatus(paymentId); // iniciar el polling
+    pollPaymentStatus(paymentId);
   }
 };
+
    const callbackError = (msg) =>{
     console.log(msg)
     if(msg =="404: Payment not found or doesn't belong to this user"){
@@ -207,7 +218,14 @@ setPaymentStatus("error");
   >
     <h2 style={{ marginBottom: 16 }}>Payment Processing</h2>
 
-    {paymentStatus === 'approved' ? (
+
+    {paymentStatus === 'approved' ?
+    paymentStatus === 'timeout' && (
+  <p style={{ color: 'orange', fontWeight: 'bold' }}>
+    ⏳ The payment is taking longer than expected. Please check your dashboard or contact support.
+  </p>
+)
+ (
       <>
         <p style={{ fontSize: 16 }}>
           <strong>Status:</strong> {paymentStatus}

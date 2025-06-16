@@ -77,7 +77,8 @@ export const actionPaymentExecute = (paymentId, payerId, callback, callbackError
       });
       console.log(response)
 
-      callback();
+      callback(response.data); // ✅ para que llegue el status y el approval_url si aplica
+
     } catch (error) {
       console.log(error)
   
