@@ -223,7 +223,7 @@ const checkFields = async () => {
   return (
     <>
 
-   <ModalOlvidar show={show} setShow={setShow} />
+   <ModalOlvidar show={show} setShow={setShow} admin={false} />
       {/* Hero Section */}
       <main  style={styles.mainContent}>
       <Header

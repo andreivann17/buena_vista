@@ -114,9 +114,40 @@ export const actionConfirm = (parametros,token, callback, callbackError) => {
     }
   };
 };
-export const actionReset = (parametros, callback, callbackError) => {
+export const actionConfirmAdmin = (parametros,token, callback, callbackError) => {
   return async (dispatch) => {
     try {
+      const body = {
+
+ 
+        token: token,
+        new_password: parametros.password,
+      };
+
+      const response = await axios.post(
+        "https://bvmailcenter.com:8000/auth/admin-reset-password/confirm",
+        body,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      callback(); // o ajusta según lo que devuelva tu backend
+    } catch (error) {
+      callbackError(error?.response?.data.detail || error.messag);
+    }
+  };
+};
+export const actionReset = (parametros, callback, callbackError,admin) => {
+  return async (dispatch) => {
+    try {
+    
+      var url = "https://bvmailcenter.com:8000/auth/user-reset-password"
+      if(admin){
+        url = "https://bvmailcenter.com:8000/auth/admin-reset-password"
+      }
       const body = {
 
  
@@ -125,7 +156,7 @@ export const actionReset = (parametros, callback, callbackError) => {
       };
 
       const response = await axios.post(
-        "https://bvmailcenter.com:8000/auth/user-reset-password",
+       url,
         body,
         {
           headers: {

@@ -19,6 +19,8 @@ import PaymentSuccess from "./containers/pages/paymentSuccess";
 import PaymentCancel from "./containers/pages/paymentCancel";
 import Account from "./containers/pages/account";
 import UserReset from "./containers/pages/userReset";
+import AdminReset from "./containers/pages/adminReset";
+
 import Pricing from "./containers/pages/pricing";
 import Location from "./containers/pages/location";
 import Contact from "./containers/pages/contact";
@@ -34,8 +36,8 @@ import store from "./store";
 import { Provider, useDispatch } from "react-redux";
 import Footer from "./components/navigation/footer";
 import Header from "./components/navigation/header";
-const pagesWithoutMenuAndDiv = ["*","/location","/contact","/pricing","/login", "/signup", "/admin/login","/auth/user-reset-password/confirm",""];
-const pagesWithoutMenuAndHeader = ["/login", "/signup", "/admin/login","/auth/user-reset-password/confirm",""];
+const pagesWithoutMenuAndDiv = ["*","/location","/contact","/pricing","/login", "/signup", "/admin/login","/auth/user-reset-password/confirm","/auth/admin-reset-password/confirm",""];
+const pagesWithoutMenuAndHeader = ["/login", "/signup", "/admin/login","/auth/user-reset-password/confirm","/auth/admin-reset-password/confirm",""];
 
 const routes = [
   {
@@ -62,7 +64,14 @@ const routes = [
   nodeRef: createRef(),
   className: "UserReset",
 },
-
+{
+  path: "/auth/admin-reset-password/confirm",
+  value: "adminReset-0",
+  name: "AdminReset",
+  element: <AdminReset />,
+  nodeRef: createRef(),
+  className: "AdminReset",
+},
 
   {
     path: "/admin/account",

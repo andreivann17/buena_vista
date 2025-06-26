@@ -183,7 +183,7 @@ function Home() {
         <div style={styles.right}></div>
       </div>
 
-      <ModalOlvidar show={show} setShow={setShow} />
+      <ModalOlvidar show={show} setShow={setShow} admin={true} />
     </div>
   );
 }

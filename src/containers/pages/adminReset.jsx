@@ -11,7 +11,7 @@ import logo from "../../assets/img/logo.png";
 import logo2 from "../../assets/img/reset.webp";
 import { useSearchParams } from "react-router-dom";
 
-import {  actionConfirm} from "../../redux/actions/login/login";
+import {  actionConfirmAdmin} from "../../redux/actions/login/login";
 function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -71,7 +71,7 @@ const acceptButtonHandler = async () => {
   if (!valid) return;
 
   const values = form.getFieldsValue(); // <-- obtiene los valores del formulario
-  dispatch(actionConfirm(values,token, callback, callbackError)); // <-- los pasa como JSON
+  dispatch(actionConfirmAdmin(values,token, callback, callbackError)); // <-- los pasa como JSON
 };
 
   const styles = {

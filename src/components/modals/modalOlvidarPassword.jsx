@@ -5,7 +5,7 @@ import { actionReset } from "../../redux/actions/login/login"
 import { useDispatch } from "react-redux";
 
 import { FloatingLabel, Form } from "react-bootstrap";
-function Home({ show, setShow }) {
+function Home({ show, setShow,admin }) {
   const [email, setEmail] = useState("")
   const dispatch = useDispatch()
   const inputRef = useRef(null);
@@ -31,7 +31,7 @@ function Home({ show, setShow }) {
     var parametros = {
       email: email
     };
-    dispatch(actionReset(parametros, callback, callbackError));
+    dispatch(actionReset(parametros, callback, callbackError,admin));
   }
 const openNotificationSuccess = () => {
   notification.success({
