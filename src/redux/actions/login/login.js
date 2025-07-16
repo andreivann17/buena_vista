@@ -26,7 +26,7 @@ export const actionLogin = (parametros, callback, callbackError) => {
 
       callback(response.data.access_token);
     } catch (error) {
-      callbackError("Email or password does not match");
+      callbackError(error.response.data.detail);
     }
   };
 };

@@ -87,37 +87,31 @@ const ini = () =>{
     }
 }
 
-const handleFilter = ({ pmb,username }) => {
-  console.log(pmb)
-  console.log(username)
+const handleFilter = ({ pmb, username }) => {
   let data = users;
 
-  if (pmb) {
+  // 🔍 Filtrar por PMB (insensible a mayúsculas)
+  if (pmb?.trim()) {
+    const searchPMB = pmb.trim().toLowerCase();
     data = data.filter(item => {
-      const searchValue = pmb.toLowerCase();
-     
-        return (
-         
-          (item.pmb && item.pmb.toLowerCase().includes(searchValue))
-        );
-     
+      const pmbValue = item.pmb?.toString().toLowerCase() ?? "";
+      return pmbValue.includes(searchPMB);
     });
   }
-  if (username) {
+
+  // 🔍 Filtrar por nombre (buscando en firstname y lastname)
+  if (username?.trim()) {
+    const searchName = username.trim().toLowerCase();
     data = data.filter(item => {
-      const searchValue = username.toLowerCase();
-   
-        return (
-      
-          (item.username && item.username.toLowerCase().includes(searchValue))
-        );
-   
+      const first = item.nombre?.toLowerCase() ?? "";
+      const last = item.apellido?.toLowerCase() ?? "";
+      return first.includes(searchName) || last.includes(searchName);
     });
   }
- 
 
   setFilteredData(data);
 };
+
 
 const contentStyle = {
   position: 'relative',  // Esto asegura que el texto esté por encima del fondo oscurecido
@@ -188,21 +182,16 @@ const contentStyle = {
               </CardBootrap>
               
           </div>
-          <div className="Panel_Contenido marginb-5">
-         
-        
-              {
-                false && (
-
-                
-            <div className="d-flex justify-content-end marginb-3">
+          <div className="Panel_Contenido marginb-5 p-4">
+       
+            <div className="d-flex justify-content-end marginb-3 margint-2">
             <div className="d-flex align-items-center">
             {/* 🔥 Estos se ocultan en móviles */}
             {!isMobile && (
                     <>
                      <div className="marginr-1">
                      <Input
-    placeholder={"Search by UserName"}
+    placeholder={"Search by Name"}
     allowClear
     size="large"
     value={filterValues.username}
@@ -243,8 +232,7 @@ const contentStyle = {
                   </div>
                 )}
               </div>
-              )
-              }
+              
             <Cardant style={{borderRadius:12,boxShadow: "0px 4px 10px rgba(0,0,0,0.5)",padding:20}}>
             <UsersTable ini={ini} data={filteredData}  />
             </Cardant>

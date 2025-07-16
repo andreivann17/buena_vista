@@ -84,48 +84,55 @@ useEffect(() => {
   handleResize(); // Ejecutarlo al montar
   return () => window.removeEventListener('resize', handleResize);
 }, []);
-const handleFilter = ({ pmb, code,startDate, endDate }) => {
+const handleFilter = ({ pmb, code, startDate, endDate }) => {
   let data = shipments;
 
-  if (pmb) {
-    data = data.filter(item => {
-      const searchValue = pmb.toLowerCase();
-   
-        return (
-       
-          (item.pmb && item.pmb.toLowerCase().includes(searchValue))
-        );
-      
-    });
+  if (pmb?.trim()) {
+    const searchPMB = pmb.trim().toLowerCase();
+    data = data.filter(item => item.pmb?.toLowerCase().includes(searchPMB));
   }
-  if (code) {
-    data = data.filter(item => {
-      const searchValue = code.toLowerCase();
-      
-        return (
-          (item.code && item.code.toLowerCase().includes(searchValue)) 
-        );
-      
-    });
+
+  if (code?.trim()) {
+    const searchCode = code.trim().toLowerCase();
+    data = data.filter(item => item.codigoenvio?.toLowerCase().includes(searchCode));
   }
+
   if (startDate && endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    start.setHours(0, 0, 0, 0);
+    end.setHours(23, 59, 59, 999);
+
     data = data.filter(item => {
-      const fecha = new Date(item.FechaRecibido);
-      return fecha >= startDate && fecha <= endDate;
+      const rawDate = item.fecharecibido;
+      if (!rawDate) return false;
+      const fecha = new Date(rawDate);
+      return fecha >= start && fecha <= end;
     });
   }
 
   setFilteredData(data);
 };
+
+
+
 const handleDateChange = (dates) => {
-  if (dates) {
+  if (!dates) {
     setFilterValues(prev => ({
       ...prev,
-      startDate: dates[0] ? dates[0].toDate() : null,
-      endDate: dates[1] ? dates[1].toDate() : null,
+      startDate: null,
+      endDate: null,
     }));
+    return;
   }
+
+  setFilterValues(prev => ({
+    ...prev,
+    startDate: dates[0] ? dates[0].toDate() : null,
+    endDate: dates[1] ? dates[1].toDate() : null,
+  }));
 };
+
 const cardStyle = {
 
   backgroundSize: '100%', // Incrementa este valor para reducir el "zoom" de la imagen
@@ -230,13 +237,11 @@ const contentStyle = {
     </CardBootrap>
     
 </div>
-          <div className="Panel_Contenido marginb-5">
+          <div className="Panel_Contenido marginb-5 p-4">
          
           
-                 {
-                false && (
-
-            <div className="d-flex justify-content-end marginb-3" >
+             
+            <div className="d-flex justify-content-end marginb-3 margint-2" >
             <div className="d-flex align-items-center">
             {/* 🔥 Estos se ocultan en móviles */}
             {!isMobile && (
@@ -298,8 +303,7 @@ const contentStyle = {
                   </div>
                 )}
               </div>
-              )
-              }
+              
             <Cardant style={{borderRadius:12,boxShadow: "0px 4px 10px rgba(0,0,0,0.5)",padding:20}}>
             <HistoryTable data={filteredData} isAdmin={isAdmin} />
             </Cardant>
