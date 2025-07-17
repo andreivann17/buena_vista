@@ -327,7 +327,18 @@ select:disabled {
     animation-name: fadeInDown;
     animation-duration: 0.5s;
   }
-  
+/* shipments.css */
+
+.ant-picker-dropdown {
+  max-width: 100vw !important;
+  width: auto !important;
+}
+
+.ant-picker-panels {
+  display: flex;
+  flex-direction: column !important;
+}
+
   @keyframes fadeInDown {
     from {
       opacity: 0;

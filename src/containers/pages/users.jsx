@@ -5,7 +5,7 @@ import { useNavigate,useLocation } from "react-router-dom";
 import UsersTable from "../../components/tables/usersTable.js";
 import { Button,Card as Cardant,Input,DatePicker } from 'antd';
 import {Card as CardBootrap} from "react-bootstrap/";
-import RecordFilter from "../../components/offCanvas/recordFilter.js";
+import RecordFilter from "../../components/offCanvas/recordFilterUsers.js";
 import { actionUsersGet, } from "../../redux/actions/users/users.js";
 import { EllipsisOutlined } from '@ant-design/icons';
 import {actionInfoAdmin} from "../../redux/actions/menus/menus"
