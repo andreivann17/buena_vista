@@ -121,7 +121,7 @@ const routes = [
     nodeRef: createRef(),
     className: "Users",
   },
-  {
+/*  {
     path: "/payment",
     value: "payment-0",
     name: "Payment",
@@ -145,7 +145,7 @@ const routes = [
     nodeRef: createRef(),
     className: "PaymentCancel",
   },
-  {
+*/{
     path: "/admin/login",
     value: "login-0",
     name: "Login",

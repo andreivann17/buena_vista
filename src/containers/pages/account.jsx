@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import Header from "../../components/navigation/headerDashboard.jsx";
 import { connect, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, Card as Cardant, Input, DatePicker, Form, notification } from 'antd';
+import { Button, Card as Cardant, Input, DatePicker, Form, notification,Modal } from 'antd';
 import { Card as CardBootrap } from "react-bootstrap/";
-import { actionUsersAdminUpdate, actionUsersGet, actionUsersUpdate } from "../../redux/actions/users/users.js";
+import { actionUsersAdminUpdate, actionUsersGet, actionUsersUpdate,actionUsersDelete,actionAdminDelete } from "../../redux/actions/users/users.js";
 import backgroundImage from "../../assets/img/users.webp"
 
 const { RangePicker } = DatePicker;
@@ -70,7 +70,22 @@ function Home({ infoAdmin, infoUser }) {
   const [edit, setEdit] = useState(false)
   const navigate = useNavigate();
   const dispatch = useDispatch();
+const callbackEliminar = () => {
+  openNotification("Your account was successfully deleted.");
+  navigate("/");
+};
 
+const callbackEliminarError = () => {
+  openNotificationError("There was a problem deleting your account. Please try again.");
+};
+
+  const handleDeleteAccount = () =>{
+    if(isAdmin){
+  dispatch(actionAdminDelete(infoAdmin["id"],callbackEliminar,callbackEliminarError))
+  return
+    }
+    dispatch(actionUsersDelete(infoUser["id"],callbackEliminar,callbackEliminarError))
+  }
   useEffect(() => {
     if (token == null) {
       navigate("/login");
@@ -95,19 +110,24 @@ function Home({ infoAdmin, infoUser }) {
 
   }, [infoAdmin]);
 
-  const openNotification = (msg) => {
+  const openNotificationError = (msg) => {
     notification.error({
       message: "Error",
       description: msg,
     });
   };
-
+  const openNotification = (msg) => {
+    notification.success({
+      message: "Error",
+      description: msg,
+    });
+  };
   const checkFields = async () => {
     try {
       await form.validateFields();
       return true;
     } catch (errorInfo) {
-      openNotification("Please complete all fields correctly.");
+      openNotificationError("Please complete all fields correctly.");
       return false;
     }
   };
@@ -115,7 +135,7 @@ function Home({ infoAdmin, infoUser }) {
     window.location.reload();
   }
   const callbackError = (msg) => {
-    openNotification(msg);
+    openNotificationError(msg);
   }
   const acceptButtonHandler = async () => {
     const valid = await checkFields();
@@ -303,6 +323,7 @@ function Home({ infoAdmin, infoUser }) {
                             <div className="mt-4">
                               <Button
                                 type="primary"
+                                  className="custom-button"
                                 block
                               onClick={() => {
   const dataToFill = isAdmin ? infoAdmin : infoUser;
@@ -317,6 +338,32 @@ function Home({ infoAdmin, infoUser }) {
                               >
                                 Edit Account
                               </Button>
+                            </div>
+                              <div className="mt-4">
+                             <Button
+  type="primary"
+  className="custom-button-delete"
+  block
+  onClick={() => {
+    Modal.confirm({
+      title: 'Are you sure you want to delete your account?',
+      content: 'This action is irreversible and all your data will be permanently removed.',
+      okText: 'Yes, delete it',
+      okType: 'danger',
+      cancelText: 'No, cancel',
+      onOk() {
+        // Aquí va la función que tú controlarás
+        handleDeleteAccount(); // Reemplaza con tu propia función
+      },
+      onCancel() {
+        // No se hace nada, simplemente se cierra el modal
+      },
+    });
+  }}
+>
+  Delete Account
+</Button>
+
                             </div>
                           </div>
                         )

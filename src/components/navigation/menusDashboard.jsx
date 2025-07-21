@@ -13,7 +13,7 @@ const icons = ['fas fa-truck', 'fas fa-money-check-dollar', 'fas fa-user']
 const iconsAdmin = ['fas fa-truck', 'fas fa-users', 'fas fa-user']
 const botones = [
   [["Shipments", "/shipments"], []],
-  [["Payment", "/payment"], []],
+  //[["Payment", "/payment"], []],
    [["Account", "/account"], []],
 ];
 

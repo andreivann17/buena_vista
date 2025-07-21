@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Table, Dropdown, Menu, Button, Modal, notification } from 'antd';
 import { EllipsisOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { actionUsersDelete,actionUsersActivate } from "../../redux/actions/users/users.js";
+import { actionUsersAdminDelete,actionUsersActivate } from "../../redux/actions/users/users.js";
 import { useDispatch } from 'react-redux';
 
 const { Column } = Table;
@@ -12,7 +12,7 @@ function HistoryTable({ data, ini }) {
   const dispatch = useDispatch();
 
   const onConfirmDelete = (id) => {
-    dispatch(actionUsersDelete(id, callback, callbackError));
+    dispatch(actionUsersAdminDelete(id, callback, callbackError));
   };
 
   const openNotification = (msg, type = "error") => {
